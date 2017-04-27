@@ -38,7 +38,7 @@ responses:
       $ref: '#/definitions/error'
 
    errorClusterNotFound:
-    description: The task was not found
+    description: The cluster was not found
     schema:
       $ref: '#/definitions/error'
 
