@@ -268,12 +268,16 @@ definitions:
       config:
         $ref: '#/definitions/clusterConfig'
       status:
-        type: string
-        enum:
-        - active
-        - inactive
-        - error
-        
+        $ref: '#/definitions/clusterStatus'
+  
+  clusterStatus:
+    type: string
+    description: the status of the cluster
+    enum:
+    - active
+    - inactive
+    - error
+
   clusterConfig:
     type: object
     required:
