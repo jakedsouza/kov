@@ -8,11 +8,9 @@ info:
 
 consumes:
   - application/json
-  - application/vnd.supervised-io.lifecycle.v0+json
 
 produces:
   - application/json
-  - application/vnd.supervised-io.lifecycle.v0+json
 
 schemes:
   - https
