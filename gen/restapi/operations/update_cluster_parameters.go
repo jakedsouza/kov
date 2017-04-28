@@ -43,6 +43,11 @@ type UpdateClusterParams struct {
 	  In: body
 	*/
 	ClusterUpdateConfig *models.ClusterUpdateConfig
+	/*the cluster name to be deleted
+	  Required: true
+	  In: path
+	*/
+	Name string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -79,6 +84,11 @@ func (o *UpdateClusterParams) BindRequest(r *http.Request, route *middleware.Mat
 		res = append(res, errors.Required("clusterUpdateConfig", "body"))
 	}
 
+	rName, rhkName, _ := route.Params.GetOK("name")
+	if err := o.bindName(rName, rhkName, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
@@ -108,6 +118,17 @@ func (o *UpdateClusterParams) validateXRequestID(formats strfmt.Registry) error 
 	if err := validate.MinLength("X-Request-Id", "header", (*o.XRequestID), 1); err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func (o *UpdateClusterParams) bindName(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+
+	o.Name = raw
 
 	return nil
 }

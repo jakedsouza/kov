@@ -27,7 +27,7 @@ CreateCluster creates a cluster
 
 creates a cluster
 */
-func (a *Client) CreateCluster(params *CreateClusterParams) (*CreateClusterNoContent, error) {
+func (a *Client) CreateCluster(params *CreateClusterParams) (*CreateClusterAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCreateClusterParams()
@@ -39,7 +39,7 @@ func (a *Client) CreateCluster(params *CreateClusterParams) (*CreateClusterNoCon
 		PathPattern:        "/clusters",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
+		Schemes:            []string{"http", "https"},
 		Params:             params,
 		Reader:             &CreateClusterReader{formats: a.formats},
 		Context:            params.Context,
@@ -48,7 +48,7 @@ func (a *Client) CreateCluster(params *CreateClusterParams) (*CreateClusterNoCon
 	if err != nil {
 		return nil, err
 	}
-	return result.(*CreateClusterNoContent), nil
+	return result.(*CreateClusterAccepted), nil
 
 }
 
@@ -66,10 +66,10 @@ func (a *Client) DeleteCluster(params *DeleteClusterParams) (*DeleteClusterNoCon
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "deleteCluster",
 		Method:             "DELETE",
-		PathPattern:        "/clusters",
+		PathPattern:        "/clusters/{name}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
+		Schemes:            []string{"http", "https"},
 		Params:             params,
 		Reader:             &DeleteClusterReader{formats: a.formats},
 		Context:            params.Context,
@@ -97,7 +97,7 @@ func (a *Client) GetTask(params *GetTaskParams) (*GetTaskOK, error) {
 		PathPattern:        "/tasks/{taskid}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
+		Schemes:            []string{"http", "https"},
 		Params:             params,
 		Reader:             &GetTaskReader{formats: a.formats},
 		Context:            params.Context,
@@ -127,7 +127,7 @@ func (a *Client) ListClusters(params *ListClustersParams) (*ListClustersOK, erro
 		PathPattern:        "/clusters",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
+		Schemes:            []string{"http", "https"},
 		Params:             params,
 		Reader:             &ListClustersReader{formats: a.formats},
 		Context:            params.Context,
@@ -154,10 +154,10 @@ func (a *Client) UpdateCluster(params *UpdateClusterParams) (*UpdateClusterNoCon
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "updateCluster",
 		Method:             "PUT",
-		PathPattern:        "/clusters",
+		PathPattern:        "/clusters/{name}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
+		Schemes:            []string{"http", "https"},
 		Params:             params,
 		Reader:             &UpdateClusterReader{formats: a.formats},
 		Context:            params.Context,

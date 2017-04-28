@@ -63,7 +63,7 @@ type UpdateClusterNoContent struct {
 }
 
 func (o *UpdateClusterNoContent) Error() string {
-	return fmt.Sprintf("[PUT /clusters][%d] updateClusterNoContent  %+v", 204, o.Payload)
+	return fmt.Sprintf("[PUT /clusters/{name}][%d] updateClusterNoContent  %+v", 204, o.Payload)
 }
 
 func (o *UpdateClusterNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -90,7 +90,7 @@ type UpdateClusterNotFound struct {
 }
 
 func (o *UpdateClusterNotFound) Error() string {
-	return fmt.Sprintf("[PUT /clusters][%d] updateClusterNotFound  %+v", 404, o.Payload)
+	return fmt.Sprintf("[PUT /clusters/{name}][%d] updateClusterNotFound  %+v", 404, o.Payload)
 }
 
 func (o *UpdateClusterNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -128,7 +128,7 @@ func (o *UpdateClusterDefault) Code() int {
 }
 
 func (o *UpdateClusterDefault) Error() string {
-	return fmt.Sprintf("[PUT /clusters][%d] updateCluster default  %+v", o._statusCode, o.Payload)
+	return fmt.Sprintf("[PUT /clusters/{name}][%d] updateCluster default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *UpdateClusterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -19,13 +19,14 @@ func init() {
     "application/json"
   ],
   "schemes": [
+    "http",
     "https"
   ],
   "swagger": "2.0",
   "info": {
-    "description": "# RESTful API for the vSphere Container Cluster Service (VCCS)\n",
-    "title": "API Specification for the vSphere Container Cluster Service (VCCS)",
-    "version": "0.2.0"
+    "description": "# RESTful API for the Kubernetes on vSphere (KOV)\n",
+    "title": "API Specification for the Kubernetes on vSphere (KOV)",
+    "version": "0.1.0"
   },
   "paths": {
     "/clusters": {
@@ -53,6 +54,41 @@ func init() {
           }
         }
       },
+      "post": {
+        "description": "creates a cluster",
+        "summary": "creates a cluster",
+        "operationId": "createCluster",
+        "parameters": [
+          {
+            "$ref": "#/parameters/requestId"
+          },
+          {
+            "description": "the config of the cluster to be created",
+            "name": "clusterConfig",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/clusterConfig"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "create cluster task has been accepted",
+            "schema": {
+              "$ref": "#/definitions/taskId"
+            }
+          },
+          "409": {
+            "$ref": "#/responses/errorClusterNameConflict"
+          },
+          "default": {
+            "$ref": "#/responses/errorDefault"
+          }
+        }
+      }
+    },
+    "/clusters/{name}": {
       "put": {
         "description": "updates a cluster with the given update config",
         "summary": "updates a cluster",
@@ -60,6 +96,14 @@ func init() {
         "parameters": [
           {
             "$ref": "#/parameters/requestId"
+          },
+          {
+            "type": "string",
+            "x-nullable": false,
+            "description": "the cluster name to be deleted",
+            "name": "name",
+            "in": "path",
+            "required": true
           },
           {
             "description": "the new config of the cluster to be updated",
@@ -86,39 +130,6 @@ func init() {
           }
         }
       },
-      "post": {
-        "description": "creates a cluster",
-        "summary": "creates a cluster",
-        "operationId": "createCluster",
-        "parameters": [
-          {
-            "$ref": "#/parameters/requestId"
-          },
-          {
-            "description": "the config of the cluster to be created",
-            "name": "clusterConfig",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/clusterConfig"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "create cluster task has been accepted",
-            "schema": {
-              "$ref": "#/definitions/taskId"
-            }
-          },
-          "409": {
-            "$ref": "#/responses/errorClusterNameConflict"
-          },
-          "default": {
-            "$ref": "#/responses/errorDefault"
-          }
-        }
-      },
       "delete": {
         "description": "deletes a cluster with the given name",
         "summary": "deletes a cluster",
@@ -132,7 +143,7 @@ func init() {
             "x-nullable": false,
             "description": "the cluster name to be deleted",
             "name": "name",
-            "in": "query",
+            "in": "path",
             "required": true
           }
         ],
@@ -490,7 +501,7 @@ func init() {
       }
     },
     "task": {
-      "description": "an asynchronous task",
+      "description": "an asynchronous tasko",
       "type": "object",
       "required": [
         "id",

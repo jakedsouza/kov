@@ -13,6 +13,7 @@ produces:
   - application/json
 
 schemes:
+  - http
   - https
 
 parameters:

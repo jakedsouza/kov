@@ -72,6 +72,11 @@ type UpdateClusterParams struct {
 
 	*/
 	ClusterUpdateConfig *models.ClusterUpdateConfig
+	/*Name
+	  the cluster name to be deleted
+
+	*/
+	Name string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -133,6 +138,17 @@ func (o *UpdateClusterParams) SetClusterUpdateConfig(clusterUpdateConfig *models
 	o.ClusterUpdateConfig = clusterUpdateConfig
 }
 
+// WithName adds the name to the update cluster params
+func (o *UpdateClusterParams) WithName(name string) *UpdateClusterParams {
+	o.SetName(name)
+	return o
+}
+
+// SetName adds the name to the update cluster params
+func (o *UpdateClusterParams) SetName(name string) {
+	o.Name = name
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *UpdateClusterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -155,6 +171,11 @@ func (o *UpdateClusterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 	}
 
 	if err := r.SetBodyParam(o.ClusterUpdateConfig); err != nil {
+		return err
+	}
+
+	// path param name
+	if err := r.SetPathParam("name", o.Name); err != nil {
 		return err
 	}
 

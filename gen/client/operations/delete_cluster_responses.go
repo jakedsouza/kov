@@ -63,7 +63,7 @@ type DeleteClusterNoContent struct {
 }
 
 func (o *DeleteClusterNoContent) Error() string {
-	return fmt.Sprintf("[DELETE /clusters][%d] deleteClusterNoContent  %+v", 204, o.Payload)
+	return fmt.Sprintf("[DELETE /clusters/{name}][%d] deleteClusterNoContent  %+v", 204, o.Payload)
 }
 
 func (o *DeleteClusterNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -90,7 +90,7 @@ type DeleteClusterNotFound struct {
 }
 
 func (o *DeleteClusterNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /clusters][%d] deleteClusterNotFound  %+v", 404, o.Payload)
+	return fmt.Sprintf("[DELETE /clusters/{name}][%d] deleteClusterNotFound  %+v", 404, o.Payload)
 }
 
 func (o *DeleteClusterNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -128,7 +128,7 @@ func (o *DeleteClusterDefault) Code() int {
 }
 
 func (o *DeleteClusterDefault) Error() string {
-	return fmt.Sprintf("[DELETE /clusters][%d] deleteCluster default  %+v", o._statusCode, o.Payload)
+	return fmt.Sprintf("[DELETE /clusters/{name}][%d] deleteCluster default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *DeleteClusterDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

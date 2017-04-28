@@ -148,13 +148,9 @@ func (o *DeleteClusterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 
 	}
 
-	// query param name
-	qrName := o.Name
-	qName := qrName
-	if qName != "" {
-		if err := r.SetQueryParam("name", qName); err != nil {
-			return err
-		}
+	// path param name
+	if err := r.SetPathParam("name", o.Name); err != nil {
+		return err
 	}
 
 	if len(res) > 0 {
