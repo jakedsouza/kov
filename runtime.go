@@ -11,6 +11,7 @@ import (
 
 	cjm "github.com/casualjim/middlewares"
 	"github.com/kardianos/osext"
+	"github.com/supervised-io/kov/gen/restapi/operations"
 )
 
 var (
@@ -60,6 +61,9 @@ type Application interface {
 
 	// Stop the application an its enabled modules
 	Stop() error
+
+	// RegisterHandlers registers the http handler
+	RegisterHandlers(*operations.KovAPI)
 }
 
 func ensureDefaults(name string) (string, string, string, error) {
@@ -201,6 +205,10 @@ func (d *defaultApplication) Stop() error {
 		}
 	}
 	return nil
+}
+
+func (d *defaultApplication) RegisterHandlers(api *operations.KovAPI) {
+	// Register the http handlers here
 }
 
 // Logger is what your logrus-enabled library should take, that way

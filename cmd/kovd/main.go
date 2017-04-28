@@ -41,6 +41,9 @@ func main() {
 		info:  golog.New(os.Stderr, "[INFO] [kovd] ", 0),
 		error: golog.New(os.Stderr, "[ERROR] [kovd] ", 0),
 	}
+
+	app.RegisterHandlers(api)
+
 	handler := alice.New(
 		middlewares.GzipMW(middlewares.DefaultCompression),
 		middlewares.NewRecoveryMW(app.Info().Name, ml),
