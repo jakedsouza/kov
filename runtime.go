@@ -141,9 +141,7 @@ type defaultApplication struct {
 }
 
 func (d *defaultApplication) Add(modules ...Module) error {
-	if len(modules) > 0 {
-		d.modules = append(d.modules, modules...)
-	}
+	d.modules = append(d.modules, modules...)
 	return nil
 }
 
