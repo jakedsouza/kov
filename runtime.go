@@ -11,7 +11,6 @@ import (
 
 	cjm "github.com/casualjim/middlewares"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
 	"github.com/kardianos/osext"
 	"github.com/supervised-io/kov/gen/restapi/operations"
 	"github.com/supervised-io/kov/pkg/handlers"
@@ -221,16 +220,11 @@ func (d *defaultApplication) RegisterHandlers(api *operations.KovAPI) {
 
 	api.ListClustersHandler = operations.ListClustersHandlerFunc((&handlers.ListClusters{}).Handle)
 
-	api.DeleteClusterHandler = operations.DeleteClusterHandlerFunc(func(params operations.DeleteClusterParams) middleware.Responder {
-		return middleware.NotImplemented("operation .DeleteCluster has not yet been implemented")
-	})
-	api.GetTaskHandler = operations.GetTaskHandlerFunc(func(params operations.GetTaskParams) middleware.Responder {
-		return middleware.NotImplemented("operation .GetTask has not yet been implemented")
-	})
+	api.GetTaskHandler = operations.GetTaskHandlerFunc((&handlers.GetTask{}).Handle)
 
-	api.UpdateClusterHandler = operations.UpdateClusterHandlerFunc(func(params operations.UpdateClusterParams) middleware.Responder {
-		return middleware.NotImplemented("operation .UpdateCluster has not yet been implemented")
-	})
+	api.DeleteClusterHandler = operations.DeleteClusterHandlerFunc((&handlers.DeleteCluster{}).Handle)
+
+	api.UpdateClusterHandler = operations.UpdateClusterHandlerFunc((&handlers.UpdateCluster{}).Handle)
 
 	api.ServerShutdown = func() {}
 

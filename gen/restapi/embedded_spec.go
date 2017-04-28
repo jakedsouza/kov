@@ -116,7 +116,7 @@ func init() {
           }
         ],
         "responses": {
-          "204": {
+          "202": {
             "description": "update cluster task has been accepted",
             "schema": {
               "$ref": "#/definitions/taskId"
@@ -148,7 +148,7 @@ func init() {
           }
         ],
         "responses": {
-          "204": {
+          "202": {
             "description": "delete cluster task has been accepted",
             "schema": {
               "$ref": "#/definitions/taskId"

@@ -23,8 +23,8 @@ type UpdateClusterReader struct {
 func (o *UpdateClusterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
 
-	case 204:
-		result := NewUpdateClusterNoContent()
+	case 202:
+		result := NewUpdateClusterAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -49,24 +49,24 @@ func (o *UpdateClusterReader) ReadResponse(response runtime.ClientResponse, cons
 	}
 }
 
-// NewUpdateClusterNoContent creates a UpdateClusterNoContent with default headers values
-func NewUpdateClusterNoContent() *UpdateClusterNoContent {
-	return &UpdateClusterNoContent{}
+// NewUpdateClusterAccepted creates a UpdateClusterAccepted with default headers values
+func NewUpdateClusterAccepted() *UpdateClusterAccepted {
+	return &UpdateClusterAccepted{}
 }
 
-/*UpdateClusterNoContent handles this case with default header values.
+/*UpdateClusterAccepted handles this case with default header values.
 
 update cluster task has been accepted
 */
-type UpdateClusterNoContent struct {
+type UpdateClusterAccepted struct {
 	Payload models.TaskID
 }
 
-func (o *UpdateClusterNoContent) Error() string {
-	return fmt.Sprintf("[PUT /clusters/{name}][%d] updateClusterNoContent  %+v", 204, o.Payload)
+func (o *UpdateClusterAccepted) Error() string {
+	return fmt.Sprintf("[PUT /clusters/{name}][%d] updateClusterAccepted  %+v", 202, o.Payload)
 }
 
-func (o *UpdateClusterNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+func (o *UpdateClusterAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

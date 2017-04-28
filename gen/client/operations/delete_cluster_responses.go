@@ -23,8 +23,8 @@ type DeleteClusterReader struct {
 func (o *DeleteClusterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
 
-	case 204:
-		result := NewDeleteClusterNoContent()
+	case 202:
+		result := NewDeleteClusterAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -49,24 +49,24 @@ func (o *DeleteClusterReader) ReadResponse(response runtime.ClientResponse, cons
 	}
 }
 
-// NewDeleteClusterNoContent creates a DeleteClusterNoContent with default headers values
-func NewDeleteClusterNoContent() *DeleteClusterNoContent {
-	return &DeleteClusterNoContent{}
+// NewDeleteClusterAccepted creates a DeleteClusterAccepted with default headers values
+func NewDeleteClusterAccepted() *DeleteClusterAccepted {
+	return &DeleteClusterAccepted{}
 }
 
-/*DeleteClusterNoContent handles this case with default header values.
+/*DeleteClusterAccepted handles this case with default header values.
 
 delete cluster task has been accepted
 */
-type DeleteClusterNoContent struct {
+type DeleteClusterAccepted struct {
 	Payload models.TaskID
 }
 
-func (o *DeleteClusterNoContent) Error() string {
-	return fmt.Sprintf("[DELETE /clusters/{name}][%d] deleteClusterNoContent  %+v", 204, o.Payload)
+func (o *DeleteClusterAccepted) Error() string {
+	return fmt.Sprintf("[DELETE /clusters/{name}][%d] deleteClusterAccepted  %+v", 202, o.Payload)
 }
 
-func (o *DeleteClusterNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+func (o *DeleteClusterAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

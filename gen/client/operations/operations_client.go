@@ -57,7 +57,7 @@ DeleteCluster deletes a cluster
 
 deletes a cluster with the given name
 */
-func (a *Client) DeleteCluster(params *DeleteClusterParams) (*DeleteClusterNoContent, error) {
+func (a *Client) DeleteCluster(params *DeleteClusterParams) (*DeleteClusterAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteClusterParams()
@@ -78,7 +78,7 @@ func (a *Client) DeleteCluster(params *DeleteClusterParams) (*DeleteClusterNoCon
 	if err != nil {
 		return nil, err
 	}
-	return result.(*DeleteClusterNoContent), nil
+	return result.(*DeleteClusterAccepted), nil
 
 }
 
@@ -145,7 +145,7 @@ UpdateCluster updates a cluster
 
 updates a cluster with the given update config
 */
-func (a *Client) UpdateCluster(params *UpdateClusterParams) (*UpdateClusterNoContent, error) {
+func (a *Client) UpdateCluster(params *UpdateClusterParams) (*UpdateClusterAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewUpdateClusterParams()
@@ -166,7 +166,7 @@ func (a *Client) UpdateCluster(params *UpdateClusterParams) (*UpdateClusterNoCon
 	if err != nil {
 		return nil, err
 	}
-	return result.(*UpdateClusterNoContent), nil
+	return result.(*UpdateClusterAccepted), nil
 
 }
 
