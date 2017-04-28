@@ -1,0 +1,455 @@
+swagger: "2.0"
+info:
+  title: API Specification for the Kubernetes on vSphere (KOV)
+
+  description: |
+    # RESTful API for the Kubernetes on vSphere (KOV)
+  version: 0.1.0
+
+consumes:
+  - application/json
+
+produces:
+  - application/json
+
+schemes:
+  - https
+
+parameters:
+  requestId:
+    name: X-Request-Id
+    description: A unique UUID for the request
+    in: header
+    type: string
+    required: false
+    minLength: 1
+
+responses:
+   errorClusterNameConflict:
+    description: The provided cluster name already exists
+    schema:
+      $ref: '#/definitions/error'
+
+   errorTaskNotFound:
+    description: The task was not found
+    schema:
+      $ref: '#/definitions/error'
+
+   errorClusterNotFound:
+    description: The cluster was not found
+    schema:
+      $ref: '#/definitions/error'
+
+   errorDefault:
+    description: Error
+    schema:
+      $ref: '#/definitions/error'
+
+paths:
+  /clusters:
+    get:
+      operationId: listClusters
+      summary: get a list of all clusters
+      description: get a list of all clusters managed by the VCCS
+      parameters:
+        - $ref: '#/parameters/requestId'
+      responses:
+        200:
+          description: 200 response with the list of clusters
+          schema:
+           type: array
+           items:
+             $ref: '#/definitions/cluster'
+        default:
+          $ref: "#/responses/errorDefault"
+
+    post:
+      operationId: createCluster
+      summary: creates a cluster
+      description: creates a cluster
+      parameters:
+        - $ref: '#/parameters/requestId'
+        - name: clusterConfig
+          description: the config of the cluster to be created
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/clusterConfig'
+      responses:
+        204:
+          description: create cluster task has been accepted
+          schema:
+            $ref: '#/definitions/taskId'
+        409:
+          $ref: '#/responses/errorClusterNameConflict'
+        default:
+          $ref: '#/responses/errorDefault'
+  /clusters/{name}:
+    put:
+      operationId: updateCluster
+      summary: updates a cluster
+      description: updates a cluster with the given update config
+      parameters:
+        - $ref: '#/parameters/requestId'
+        - name: name
+          description: the cluster name to be deleted
+          in: path
+          required: true
+          type: string
+          x-nullable: false
+        - name: clusterUpdateConfig
+          description: the new config of the cluster to be updated
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/clusterUpdateConfig'
+      responses:
+        204:
+          description: update cluster task has been accepted
+          schema:
+            $ref: '#/definitions/taskId'
+        404:
+          $ref: '#/responses/errorClusterNotFound'
+        default:
+          $ref: '#/responses/errorDefault'
+
+    delete:
+      operationId: deleteCluster
+      summary: deletes a cluster
+      description: deletes a cluster with the given name
+      parameters:
+        - $ref: '#/parameters/requestId'
+        - name: name
+          description: the cluster name to be deleted
+          in: path
+          required: true
+          type: string
+          x-nullable: false
+      responses:
+        204:
+          description: delete cluster task has been accepted
+          schema:
+            $ref: '#/definitions/taskId'
+        404:
+          $ref: '#/responses/errorClusterNotFound'
+        default:
+          $ref: '#/responses/errorDefault'
+
+  /tasks/{taskid}:
+    parameters:
+      - name: taskid
+        description: the id for a task
+        type: string
+        in: path
+        required: true
+    get:
+      operationId: getTask
+      summary: get the task for the given task id
+      parameters:
+        - $ref: "#/parameters/requestId"
+      responses:
+        200:
+          description: the task for the given task id
+          schema:
+            $ref: "#/definitions/task"
+        404:
+          $ref: "#/responses/errorTaskNotFound"
+        default:
+          $ref: "#/responses/errorDefault"
+
+definitions:
+  error:
+    description: |
+      the default error model for all the error responses coming from the VCCS
+    type: object
+    required:
+      - message
+      - code
+    properties:
+      code:
+        type: integer
+        format: int64
+        description: The error code
+      message:
+        description: The error message
+        type: string
+      helpUrl:
+        description: link to help page explaining the error in more detail
+        type: string
+        format: uri
+      cause:
+        $ref: '#/definitions/error'
+
+  credentials:
+    type: object
+    required:
+    - username
+    - password
+    properties:
+      username:
+        type: string
+        minLength: 1
+        x-nullable: false
+      password:
+        type: string
+        format: password
+        minLength: 6
+        x-nullable: false
+  
+  diskFormat:
+    type: string
+    enum:
+    - thin
+    - zeroedthink
+    - eagerzeroedthick
+    default: thin
+  
+  storageClass:
+    type: object
+    required:
+    - name
+    - diskformat
+    - datastore
+    properties:
+      name:
+        description: the name of the storage class
+        type: string
+      diskformat:
+        allOf:
+          - $ref: "#/definitions/diskFormat"
+          - description: the format for the disk, defaults to thin
+      datastore:
+        type: string
+        description: the name of the datastore to create the volume in
+        minLength: 1
+      cacheReservation:
+        description: Flash read cache reservation
+        type: integer
+        format: int32
+      diskStripes:
+        description: Number of disk stripes per object
+        type: integer
+        format: int32
+      forceProvisioning:
+        description: Force provisioning
+        type: boolean
+      hostFailuresToTolerate:
+        type: integer
+        format: int32
+        description: Number of failures to tolerate
+      iopsLimit:
+        type: integer
+        format: int64
+        description: IOPS limit for object
+      objectSpaceReservation:
+        type: integer
+        format: int64
+        description: Object space reservation
+ 
+  instanceSize:
+    description: |
+      The sizes for an instance:
+      
+      * small: 1 cpu, 1Gb
+      * medium: 2 cpu, 2Gb
+      * large: 4 cpu, 8Gb
+      * huge: 8 cpu, 32Gb
+      * ginormous: 16cpu, 64Gb
+    type: string
+    enum:
+    - small
+    - medium
+    - large
+    - huge
+    - ginormous
+  
+  cluster:
+    type: object
+    required:
+    - config
+    - status
+    properties:
+      config:
+        $ref: '#/definitions/clusterConfig'
+      status:
+        $ref: '#/definitions/clusterStatus'
+  
+  clusterStatus:
+    type: string
+    description: the status of the cluster
+    enum:
+    - active
+    - inactive
+    - error
+
+  clusterConfig:
+    type: object
+    required:
+    - name
+    - minNodes
+    - noOfMasters
+    - resourcePool
+    - managementNetwork
+    properties:
+      name:
+        type: string
+        pattern: '^[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?(\.[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?)*$'
+        description: the cluster name, should be valid for use in dns names
+        minLength: 3
+        maxLength: 63
+      thumbprint:
+        description: the thumbprint of the vCenter server certificate
+        type: string
+        minLength: 57
+        pattern: '[a-fA-F0-9:]+'
+      minNodes:
+        type: integer
+        format: int32
+        minimum: 1
+        description: the minimum number of nodes that can be deployed
+      maxNodes:
+        type: integer
+        format: int32
+        description: the minimum number of nodes that can be deployed
+      noOfMasters:
+        type: integer
+        format: int32
+        description: the number of master nodes to create
+        default: 1
+      masterSize:
+        allOf:
+          - $ref: "#/definitions/instanceSize"
+          - default: small
+          - description: the size of the master nodes
+      nodeSize:     
+        allOf:
+          - $ref: "#/definitions/instanceSize"
+          - description: the size of the worker nodes, when not   specified defaults to master size
+      credentials:
+        $ref: "#/definitions/credentials"
+      storageClasses:
+        type: array
+        items:
+          $ref: "#/definitions/storageClass"
+      resourcePool:
+        type: string
+        minLength: 1
+        x-nullable: false
+      nodeResourcePools:
+        type: array
+        items:
+          type: string
+          minLength: 1
+      managementNetwork:
+        description: the management network for the deployed nodes, will have ssh port enabled
+        type: string
+      nodeNetwork:
+        description: the network used for node-to-node communication, defaults to management network
+        type: string
+      publicNetwork:
+        description: the public network to expose ports on, defaults to management network
+        type: string
+        
+  clusterUpdateConfig:
+    type: object
+    required:
+    - name
+    - minNodes
+    - noOfMasters
+    properties:
+      name:
+        type: string
+        description: the cluster name, should be valid for use in dns names
+        readOnly: true
+      credentials:
+        $ref: "#/definitions/credentials"
+      thumbprint:
+        description: the thumbprint of the vCenter server certificate
+        type: string
+        minLength: 57
+        pattern: '[a-fA-F0-9:]+'
+      minNodes:
+        type: integer
+        format: int32
+        minimum: 1
+        description: the minimum number of nodes that can be deployed
+      maxNodes:
+        type: integer
+        format: int32
+        description: the minimum number of nodes that can be deployed
+      noOfMasters:
+        type: integer
+        format: int32
+        description: the number of master nodes to create
+        default: 1
+      storageClasses:
+        type: array
+        items:
+          $ref: "#/definitions/storageClass"
+      nodeResourcePools:
+        type: array
+        items:
+          type: string
+          minLength: 1
+
+  taskId:
+    type: string
+    minLength: 1
+
+  taskType:
+    type: string
+    enum:
+    - create
+    - delete
+    - update
+
+  taskState:
+    type: string
+    enum:
+    - processing
+    - completed
+    - failed
+
+  taskStep:
+    type: string
+
+  taskContext:
+    description: the context for a task, contains data to describe what this job pertained to.
+    type: object
+    properties:
+      clusterName:
+        type: string
+        pattern: '^[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?(\.[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?)*$'
+        minLength: 3
+        maxLength: 63
+      timeout:
+        type: integer
+        default: 3600
+      cause:
+        type: string
+      log:
+        type: string
+
+  task:
+    description: an asynchronous tasko 
+    type: object
+    required:
+      - id
+      - state
+    properties:
+      id:
+        $ref: "#/definitions/taskId"
+      taskType:
+        $ref: "#/definitions/taskType"
+      created:
+        type: string
+        format: date-time
+      ttl:
+        type: string
+        format: duration
+      state:
+        $ref: "#/definitions/taskState"
+      step:
+        $ref: "#/definitions/taskStep"
+      context:
+        $ref: "#/definitions/taskContext"

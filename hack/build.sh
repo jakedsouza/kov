@@ -38,8 +38,8 @@ echo "==> Building..."
     -os="${XC_OS}" \
     -arch="${XC_ARCH}" \
     -osarch="!darwin/arm" \
-    -ldflags "-X github.com/supervised-io/kov/cmd.GitCommit='${GIT_COMMIT}' -X github.com/supervised-io/kov/cmd.GitDescribe='${GIT_DESCRIBE}'" \
-    -output "bin/${BINARY_NAME}-{{.OS}}-{{.Arch}}/${BINARY_NAME}" 
+    -ldflags "-X github.com/supervised-io/kov.Commit='${GIT_COMMIT}' -X github.com/supervised-io/kov.Version='${GIT_DESCRIBE}'" \
+    -output "bin/${BINARY_NAME}-{{.OS}}-{{.Arch}}/${BINARY_NAME}"
 
 
 # Done!

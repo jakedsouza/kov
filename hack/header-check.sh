@@ -34,6 +34,7 @@ for file in $(git ls-files | grep "\.go$" | grep -v vendor/); do
       cat ./hack/VMware-copyright ${file} > ${file}.new
       mv ${file}.new ${file}
       echo "$(tput -T xterm setaf 3)FIXING$(tput -T xterm sgr0)"
+      git add ${file}
       ERR=false
     else
       echo "$(tput -T xterm setaf 1)FAIL$(tput -T xterm sgr0)"

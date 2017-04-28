@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e -o pipefail
+
+echo "==> Running unittest check..."
+# Run header check and fix headers
+./hack/test-check.sh

@@ -1,0 +1,28 @@
+package: github.com/supervised-io/kov
+import:
+- package: github.com/casualjim/middlewares
+- package: github.com/go-openapi/errors
+- package: github.com/go-openapi/loads
+- package: github.com/go-openapi/runtime
+  subpackages:
+  - client
+  - flagext
+  - middleware
+- package: github.com/go-openapi/spec
+- package: github.com/go-openapi/strfmt
+- package: github.com/go-openapi/swag
+- package: github.com/go-openapi/validate
+- package: github.com/justinas/alice
+  version: ^1.0.0
+- package: github.com/kardianos/osext
+- package: github.com/spf13/pflag
+- package: github.com/tylerb/graceful
+  version: ^1.2.15
+- package: golang.org/x/net
+  subpackages:
+  - context
+testImport:
+- package: github.com/stretchr/testify
+  version: ^1.1.4
+  subpackages:
+  - assert

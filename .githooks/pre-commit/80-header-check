@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e -o pipefail
+
+echo "==> Running header check..."
+# Run header check and fix headers
+./hack/header-check.sh fix 2>&1 > /dev/null
+
