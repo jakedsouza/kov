@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Begin /etc/systemd/scripts/iptables
+
+# Set a known state
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+
+# These lines are here in case rules are already in place and the
+# script is ever rerun on the fly. We want to remove all rules and
+# pre-existing user defined chains before we implement new rules.
+iptables -F
+iptables -X
+iptables -Z
+
+iptables -t nat -F
+iptables -t nat -X
+
+iptables -t mangle -F
+iptables -t mangle -X
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT

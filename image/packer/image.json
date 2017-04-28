@@ -1,0 +1,79 @@
+{
+  "variables": {
+    "iso_file": "https://bintray.com/vmware/photon/download_file?file_path=photon-1.0-62c543d.iso",
+    "iso_sha1sum": "c4c6cb94c261b162e7dac60fdffa96ddb5836d66",
+    "esx_host": "",
+    "remote_username": "",
+    "remote_password": "",
+    "remote_datastore": "datastore1",
+    "root_password": "ca$hc0w"
+  },
+  "builders": [{
+    "name": "base",
+    "vm_name": "base",
+    "vmdk_name": "system",
+    "type": "vmware-iso",
+    "headless": false,
+    "disk_size": 16384,
+    "disk_type_id": "thin",
+    "guest_os_type": "vmware-photon-64",
+    "iso_url": "{{user `iso_file`}}",
+    "iso_checksum": "{{user `iso_sha1sum`}}",
+    "iso_checksum_type": "sha1",
+    "ssh_username": "root",
+    "ssh_password": "{{user `root_password`}}",
+    "ssh_wait_timeout": "60m",
+    "boot_wait": "20s",
+    "shutdown_command": "shutdown -P now",
+    "http_directory": "http",
+    "remote_type": "esx5",
+    "remote_host": "{{user `esx_host`}}",
+    "format": "ovf",
+    "remote_port": 22,
+    "remote_datastore": "{{user `remote_datastore`}}",
+    "remote_cache_datastore": "{{user `remote_datastore`}}",
+    "remote_cache_directory": "packer_cache",
+    "remote_username": "{{user `remote_username`}}",
+    "remote_password": "{{user `remote_password`}}",
+    "vnc_disable_password": true,
+    "version": 13,
+    "vmx_data": {
+      "scsi0.virtualDev": "pvscsi",
+      "ethernet0.virtualDev": "vmxnet3",
+      "ethernet0.networkName": "VM Network"
+    },
+    "vmx_data_post": {
+      "usb.present": "false"
+    },
+    "boot_command": ["<esc><wait>", "vmlinuz initrd=initrd.img root=/dev/ram0 loglevel=3 ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/kickstart.json", "<enter>"]
+  }],
+  "provisioners": [{
+    "type": "file",
+    "source": "files/bash-completion.tar.xz",
+    "destination": "/tmp/bash-completion.tar.xz"
+  }, {
+    "type": "shell",
+    "script": "files/prepare-base.sh"
+  }, {
+    "type": "file",
+    "source": "files/root/",
+    "destination": "/"
+  }, {
+    "type": "file",
+    "source": "files/base/",
+    "destination": "/"
+  }, {
+  "type": "shell",
+    "inline": [
+      "systemctl daemon-reload"
+    ]
+  }, {
+    "type": "shell",
+    "inline": [
+      "systemctl enable docker"
+    ]
+  }, {
+    "type": "shell",
+    "script": "files/cleanup.sh"
+  }]
+}
