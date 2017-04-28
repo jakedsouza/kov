@@ -76,7 +76,7 @@ paths:
           schema:
             $ref: '#/definitions/clusterConfig'
       responses:
-        204:
+        202:
           description: create cluster task has been accepted
           schema:
             $ref: '#/definitions/taskId'
@@ -92,7 +92,7 @@ paths:
       parameters:
         - $ref: '#/parameters/requestId'
         - name: name
-          description: the cluster name to be deleted
+          description: the cluster name to be updated
           in: path
           required: true
           type: string
