@@ -76,7 +76,7 @@ paths:
           schema:
             $ref: '#/definitions/clusterConfig'
       responses:
-        204:
+        202:
           description: create cluster task has been accepted
           schema:
             $ref: '#/definitions/taskId'
