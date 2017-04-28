@@ -53,6 +53,9 @@ type Application interface {
 	// Info returns the app info object for this application
 	Info() cjm.AppInfo
 
+	// Log returns the logger object for this application
+	Log() Logger
+
 	// Init the application and its modules with the config.
 	Init() error
 
