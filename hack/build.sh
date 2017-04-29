@@ -14,7 +14,7 @@ cd "$DIR"
 # Get the git commit
 GIT_COMMIT="$(git rev-parse --short HEAD)"
 GIT_DESCRIBE="$(git describe --tags --always)"
-BINARY_NAME="vcs"
+BINARY_NAME="kov"
 
 
 echo GIT_COMMIT=${GIT_COMMIT}
@@ -39,7 +39,8 @@ echo "==> Building..."
     -arch="${XC_ARCH}" \
     -osarch="!darwin/arm" \
     -ldflags "-X github.com/supervised-io/kov.Commit='${GIT_COMMIT}' -X github.com/supervised-io/kov.Version='${GIT_DESCRIBE}'" \
-    -output "bin/${BINARY_NAME}-{{.OS}}-{{.Arch}}/${BINARY_NAME}"
+    -output "bin/${BINARY_NAME}-{{.OS}}-{{.Arch}}/${BINARY_NAME}" \
+    ./cmd/kov/...
 
 
 # Done!

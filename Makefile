@@ -31,8 +31,8 @@ fmt: ## format go code
 
 .PHONY: swagger-validate
 swagger-validate: # Validates swagger files
-	swagger validate ./swaggerspec/swagger.yml
-	
+	swagger validate ./swagger/swagger.yml
+
 .PHONY: distclean
 distclean: ## Clean ALL files including ignored ones
 	git clean -f -d -x .
@@ -54,7 +54,7 @@ cli-dev: check generate-fmt ## Generates the cli for dev
 	@DEV=1 ./hack/build.sh
 
 .PHONY: cli
-cli: check generate-fmt ## Generates the cli binary 
+cli: check generate-fmt ## Generates the cli binary
 	@DEV=0 ./hack/build.sh
 
 .PHONY: test
