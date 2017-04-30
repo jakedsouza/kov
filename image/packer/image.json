@@ -14,8 +14,9 @@
     "vmdk_name": "system",
     "type": "vmware-iso",
     "headless": false,
-    "disk_size": 16384,
+    "disk_size": 8192,
     "disk_type_id": "thin",
+    "disk_additional_size": [16384],
     "guest_os_type": "vmware-photon-64",
     "iso_url": "{{user `iso_file`}}",
     "iso_checksum": "{{user `iso_sha1sum`}}",
@@ -59,19 +60,8 @@
     "source": "files/root/",
     "destination": "/"
   }, {
-    "type": "file",
-    "source": "files/base/",
-    "destination": "/"
-  }, {
-  "type": "shell",
-    "inline": [
-      "systemctl daemon-reload"
-    ]
-  }, {
     "type": "shell",
-    "inline": [
-      "systemctl enable docker"
-    ]
+    "script": "files/post-config.sh"
   }, {
     "type": "shell",
     "script": "files/cleanup.sh"
