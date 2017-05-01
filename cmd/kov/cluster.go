@@ -31,13 +31,3 @@ func registerClusterCmds(cli *Cli) {
 
 	cli.rootCmd.AddCommand(clusterCmd)
 }
-
-func registerVersionCmd(cli *Cli) {
-	versionCmd := &cobra.Command{
-		Use:   "version",
-		Short: "Show version information",
-		Long:  "Show version information",
-		RunE:  cli.runner(printVersion),
-	}
-	cli.rootCmd.AddCommand(versionCmd)
-}

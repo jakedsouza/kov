@@ -12,6 +12,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/supervised-io/kov/pkg/utils/printer"
 )
 
 // Cli struct for KOV Cli
@@ -27,6 +28,8 @@ type Cli struct {
 	rootCmd    *cobra.Command // the command hierarchy
 	v          *viper.Viper
 	clusterCmd *clusterCmd
+
+	printer *printer.Printer
 }
 
 const (
@@ -79,7 +82,9 @@ To get started, visit https://github.com/supervised-io/kov`,
 	}
 	cli.rootCmd.SetUsageTemplate(usageTemplate)
 
+	cli.printer = printer.New(os.Stdout, os.Stderr)
 	cli.SetOutput(os.Stdout, os.Stderr)
+
 	cli.rootCmd.PersistentFlags().
 		BoolVarP(&cli.Verbose, "verbose", "v", cli.Verbose, "Output more information")
 	cli.rootCmd.PersistentFlags().
@@ -91,6 +96,7 @@ To get started, visit https://github.com/supervised-io/kov`,
 	// set debug flag for swagger
 	if cli.v.GetBool("debug") {
 		os.Setenv("DEBUG", "1")
+		cli.printer.SetDebug(true)
 	}
 
 	// Register sub-commands from here
@@ -117,6 +123,8 @@ func (cli *Cli) SetOutput(stdout, stderr io.Writer) *Cli {
 	if stderr != nil {
 		cli.rootCmd.SetOutput(stderr)
 	}
+
+	cli.printer.SetOutput(stdout, stderr)
 	return cli
 }
 
