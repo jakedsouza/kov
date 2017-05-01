@@ -16,6 +16,17 @@ check: goversion checkfmt swagger-validate ## Runs static code analysis checks
 	@echo running header check ...
 	hack/header-check.sh
 
+.PHONY: update-deps
+update-deps: ## Updates the dependencies with flattened vendor and without test files
+	@echo updating deps...
+	@glide update --skip-test -v
+
+.PHONY: build-vm-template
+build-vm-template: ## Builds a vm template for the kubernetes components
+	@echo building VM template
+	@./image/packer/build-vm.sh
+
+
 .PHONY: goversion
 goversion: ## Checks if installed go version is latest
 	@echo Checking go version...
@@ -36,6 +47,7 @@ swagger-validate: # Validates swagger files
 .PHONY: distclean
 distclean: ## Clean ALL files including ignored ones
 	git clean -f -d -x .
+	rm -rf image/packer/base
 
 .PHONY: clean
 clean: ## Clean all modified files
