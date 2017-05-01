@@ -2,6 +2,9 @@ package kov
 
 import (
 	"errors"
+	"log"
+	"os"
+
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -103,7 +106,7 @@ func TestApplication_AddModule(t *testing.T) {
 		}),
 	)
 
-	app, err := New("")
+	app, err := New("", log.New(os.Stderr, "", log.LstdFlags))
 	if assert.NoError(t, err) {
 		app.Add(successMod, otherMod)
 		assert.Len(t, app.(*defaultApplication).modules, 2)
@@ -218,7 +221,7 @@ func TestApplication_AddModuleError(t *testing.T) {
 		}),
 	)
 
-	app, err := New("")
+	app, err := New("", log.New(os.Stderr, "", log.LstdFlags))
 	if assert.NoError(t, err) {
 		app.Add(successMod, failMod)
 		assert.Len(t, app.(*defaultApplication).modules, 2)
