@@ -27,7 +27,7 @@ func NewDeleteCluster(ctx *middleware.Context, handler DeleteClusterHandler) *De
 	return &DeleteCluster{Context: ctx, Handler: handler}
 }
 
-/*DeleteCluster swagger:route DELETE /clusters deleteCluster
+/*DeleteCluster swagger:route DELETE /clusters/{name} deleteCluster
 
 deletes a cluster
 

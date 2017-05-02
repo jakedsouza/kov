@@ -10,7 +10,7 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// Task an asynchronous task
+// Task an asynchronous tasko
 // swagger:model task
 type Task struct {
 

@@ -11,14 +11,14 @@ import (
 	"github.com/supervised-io/kov/gen/models"
 )
 
-// DeleteClusterNoContentCode is the HTTP code returned for type DeleteClusterNoContent
-const DeleteClusterNoContentCode int = 204
+// DeleteClusterAcceptedCode is the HTTP code returned for type DeleteClusterAccepted
+const DeleteClusterAcceptedCode int = 202
 
-/*DeleteClusterNoContent delete cluster task has been accepted
+/*DeleteClusterAccepted delete cluster task has been accepted
 
-swagger:response deleteClusterNoContent
+swagger:response deleteClusterAccepted
 */
-type DeleteClusterNoContent struct {
+type DeleteClusterAccepted struct {
 
 	/*
 	  In: Body
@@ -26,26 +26,26 @@ type DeleteClusterNoContent struct {
 	Payload models.TaskID `json:"body,omitempty"`
 }
 
-// NewDeleteClusterNoContent creates DeleteClusterNoContent with default headers values
-func NewDeleteClusterNoContent() *DeleteClusterNoContent {
-	return &DeleteClusterNoContent{}
+// NewDeleteClusterAccepted creates DeleteClusterAccepted with default headers values
+func NewDeleteClusterAccepted() *DeleteClusterAccepted {
+	return &DeleteClusterAccepted{}
 }
 
-// WithPayload adds the payload to the delete cluster no content response
-func (o *DeleteClusterNoContent) WithPayload(payload models.TaskID) *DeleteClusterNoContent {
+// WithPayload adds the payload to the delete cluster accepted response
+func (o *DeleteClusterAccepted) WithPayload(payload models.TaskID) *DeleteClusterAccepted {
 	o.Payload = payload
 	return o
 }
 
-// SetPayload sets the payload to the delete cluster no content response
-func (o *DeleteClusterNoContent) SetPayload(payload models.TaskID) {
+// SetPayload sets the payload to the delete cluster accepted response
+func (o *DeleteClusterAccepted) SetPayload(payload models.TaskID) {
 	o.Payload = payload
 }
 
 // WriteResponse to the client
-func (o *DeleteClusterNoContent) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+func (o *DeleteClusterAccepted) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.WriteHeader(204)
+	rw.WriteHeader(202)
 	payload := o.Payload
 	if err := producer.Produce(rw, payload); err != nil {
 		panic(err) // let the recovery middleware deal with this

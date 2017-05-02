@@ -19,13 +19,14 @@ func init() {
     "application/json"
   ],
   "schemes": [
+    "http",
     "https"
   ],
   "swagger": "2.0",
   "info": {
-    "description": "# RESTful API for the vSphere Container Cluster Service (VCCS)\n",
-    "title": "API Specification for the vSphere Container Cluster Service (VCCS)",
-    "version": "0.2.0"
+    "description": "# RESTful API for the Kubernetes on vSphere (KOV)\n",
+    "title": "API Specification for the Kubernetes on vSphere (KOV)",
+    "version": "0.1.0"
   },
   "paths": {
     "/clusters": {
@@ -53,39 +54,6 @@ func init() {
           }
         }
       },
-      "put": {
-        "description": "updates a cluster with the given update config",
-        "summary": "updates a cluster",
-        "operationId": "updateCluster",
-        "parameters": [
-          {
-            "$ref": "#/parameters/requestId"
-          },
-          {
-            "description": "the new config of the cluster to be updated",
-            "name": "clusterUpdateConfig",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/clusterUpdateConfig"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "update cluster task has been accepted",
-            "schema": {
-              "$ref": "#/definitions/taskId"
-            }
-          },
-          "404": {
-            "$ref": "#/responses/errorClusterNotFound"
-          },
-          "default": {
-            "$ref": "#/responses/errorDefault"
-          }
-        }
-      },
       "post": {
         "description": "creates a cluster",
         "summary": "creates a cluster",
@@ -105,7 +73,7 @@ func init() {
           }
         ],
         "responses": {
-          "204": {
+          "202": {
             "description": "create cluster task has been accepted",
             "schema": {
               "$ref": "#/definitions/taskId"
@@ -113,6 +81,49 @@ func init() {
           },
           "409": {
             "$ref": "#/responses/errorClusterNameConflict"
+          },
+          "default": {
+            "$ref": "#/responses/errorDefault"
+          }
+        }
+      }
+    },
+    "/clusters/{name}": {
+      "put": {
+        "description": "updates a cluster with the given update config",
+        "summary": "updates a cluster",
+        "operationId": "updateCluster",
+        "parameters": [
+          {
+            "$ref": "#/parameters/requestId"
+          },
+          {
+            "type": "string",
+            "x-nullable": false,
+            "description": "the cluster name to be deleted",
+            "name": "name",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "the new config of the cluster to be updated",
+            "name": "clusterUpdateConfig",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/clusterUpdateConfig"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "update cluster task has been accepted",
+            "schema": {
+              "$ref": "#/definitions/taskId"
+            }
+          },
+          "404": {
+            "$ref": "#/responses/errorClusterNotFound"
           },
           "default": {
             "$ref": "#/responses/errorDefault"
@@ -132,12 +143,12 @@ func init() {
             "x-nullable": false,
             "description": "the cluster name to be deleted",
             "name": "name",
-            "in": "query",
+            "in": "path",
             "required": true
           }
         ],
         "responses": {
-          "204": {
+          "202": {
             "description": "delete cluster task has been accepted",
             "schema": {
               "$ref": "#/definitions/taskId"
@@ -490,7 +501,7 @@ func init() {
       }
     },
     "task": {
-      "description": "an asynchronous task",
+      "description": "an asynchronous tasko",
       "type": "object",
       "required": [
         "id",

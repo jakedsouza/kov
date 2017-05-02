@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/errors"
-	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
@@ -37,7 +36,7 @@ type DeleteClusterParams struct {
 	XRequestID *string
 	/*the cluster name to be deleted
 	  Required: true
-	  In: query
+	  In: path
 	*/
 	Name string
 }
@@ -48,14 +47,12 @@ func (o *DeleteClusterParams) BindRequest(r *http.Request, route *middleware.Mat
 	var res []error
 	o.HTTPRequest = r
 
-	qs := runtime.Values(r.URL.Query())
-
 	if err := o.bindXRequestID(r.Header[http.CanonicalHeaderKey("X-Request-Id")], true, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
-	qName, qhkName, _ := qs.GetOK("name")
-	if err := o.bindName(qName, qhkName, route.Formats); err != nil {
+	rName, rhkName, _ := route.Params.GetOK("name")
+	if err := o.bindName(rName, rhkName, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -93,15 +90,9 @@ func (o *DeleteClusterParams) validateXRequestID(formats strfmt.Registry) error 
 }
 
 func (o *DeleteClusterParams) bindName(rawData []string, hasKey bool, formats strfmt.Registry) error {
-	if !hasKey {
-		return errors.Required("name", "query")
-	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
-	}
-	if err := validate.RequiredString("name", "query", raw); err != nil {
-		return err
 	}
 
 	o.Name = raw

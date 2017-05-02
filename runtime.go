@@ -10,8 +10,10 @@ import (
 	"syscall"
 
 	cjm "github.com/casualjim/middlewares"
+	"github.com/go-openapi/runtime"
 	"github.com/kardianos/osext"
 	"github.com/supervised-io/kov/gen/restapi/operations"
+	"github.com/supervised-io/kov/pkg/handlers"
 )
 
 var (
@@ -210,6 +212,22 @@ func (d *defaultApplication) Stop() error {
 
 func (d *defaultApplication) RegisterHandlers(api *operations.KovAPI) {
 	// Register the http handlers here
+	// configure the api here
+	api.JSONConsumer = runtime.JSONConsumer()
+	api.JSONProducer = runtime.JSONProducer()
+
+	api.CreateClusterHandler = operations.CreateClusterHandlerFunc((&handlers.CreateCluster{}).Handle)
+
+	api.ListClustersHandler = operations.ListClustersHandlerFunc((&handlers.ListClusters{}).Handle)
+
+	api.GetTaskHandler = operations.GetTaskHandlerFunc((&handlers.GetTask{}).Handle)
+
+	api.DeleteClusterHandler = operations.DeleteClusterHandlerFunc((&handlers.DeleteCluster{}).Handle)
+
+	api.UpdateClusterHandler = operations.UpdateClusterHandlerFunc((&handlers.UpdateCluster{}).Handle)
+
+	api.ServerShutdown = func() {}
+
 }
 
 // Logger is what your logrus-enabled library should take, that way

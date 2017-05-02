@@ -47,7 +47,7 @@ func NewKovAPI(spec *loads.Document) *KovAPI {
 	}
 }
 
-/*KovAPI # RESTful API for the vSphere Container Cluster Service (VCCS)
+/*KovAPI # RESTful API for the Kubernetes on vSphere (KOV)
  */
 type KovAPI struct {
 	spec            *loads.Document
@@ -247,7 +247,7 @@ func (o *KovAPI) initHandlerCache() {
 	if o.handlers["DELETE"] == nil {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
-	o.handlers["DELETE"]["/clusters"] = NewDeleteCluster(o.context, o.DeleteClusterHandler)
+	o.handlers["DELETE"]["/clusters/{name}"] = NewDeleteCluster(o.context, o.DeleteClusterHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -262,7 +262,7 @@ func (o *KovAPI) initHandlerCache() {
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}
-	o.handlers["PUT"]["/clusters"] = NewUpdateCluster(o.context, o.UpdateClusterHandler)
+	o.handlers["PUT"]["/clusters/{name}"] = NewUpdateCluster(o.context, o.UpdateClusterHandler)
 
 }
 

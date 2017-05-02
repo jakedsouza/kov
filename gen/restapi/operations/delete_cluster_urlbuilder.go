@@ -7,6 +7,7 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
+	"strings"
 )
 
 // DeleteClusterURL generates an URL for the delete cluster operation
@@ -37,19 +38,16 @@ func (o *DeleteClusterURL) SetBasePath(bp string) {
 func (o *DeleteClusterURL) Build() (*url.URL, error) {
 	var result url.URL
 
-	var _path = "/clusters"
-
-	_basePath := o._basePath
-	result.Path = golangswaggerpaths.Join(_basePath, _path)
-
-	qs := make(url.Values)
+	var _path = "/clusters/{name}"
 
 	name := o.Name
 	if name != "" {
-		qs.Set("name", name)
+		_path = strings.Replace(_path, "{name}", name, -1)
+	} else {
+		return nil, errors.New("Name is required on DeleteClusterURL")
 	}
-
-	result.RawQuery = qs.Encode()
+	_basePath := o._basePath
+	result.Path = golangswaggerpaths.Join(_basePath, _path)
 
 	return &result, nil
 }

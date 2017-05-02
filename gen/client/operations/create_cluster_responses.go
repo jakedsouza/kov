@@ -23,8 +23,8 @@ type CreateClusterReader struct {
 func (o *CreateClusterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
 
-	case 204:
-		result := NewCreateClusterNoContent()
+	case 202:
+		result := NewCreateClusterAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -49,24 +49,24 @@ func (o *CreateClusterReader) ReadResponse(response runtime.ClientResponse, cons
 	}
 }
 
-// NewCreateClusterNoContent creates a CreateClusterNoContent with default headers values
-func NewCreateClusterNoContent() *CreateClusterNoContent {
-	return &CreateClusterNoContent{}
+// NewCreateClusterAccepted creates a CreateClusterAccepted with default headers values
+func NewCreateClusterAccepted() *CreateClusterAccepted {
+	return &CreateClusterAccepted{}
 }
 
-/*CreateClusterNoContent handles this case with default header values.
+/*CreateClusterAccepted handles this case with default header values.
 
 create cluster task has been accepted
 */
-type CreateClusterNoContent struct {
+type CreateClusterAccepted struct {
 	Payload models.TaskID
 }
 
-func (o *CreateClusterNoContent) Error() string {
-	return fmt.Sprintf("[POST /clusters][%d] createClusterNoContent  %+v", 204, o.Payload)
+func (o *CreateClusterAccepted) Error() string {
+	return fmt.Sprintf("[POST /clusters][%d] createClusterAccepted  %+v", 202, o.Payload)
 }
 
-func (o *CreateClusterNoContent) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+func (o *CreateClusterAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

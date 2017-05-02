@@ -104,7 +104,7 @@ paths:
           schema:
             $ref: '#/definitions/clusterUpdateConfig'
       responses:
-        204:
+        202:
           description: update cluster task has been accepted
           schema:
             $ref: '#/definitions/taskId'
@@ -126,7 +126,7 @@ paths:
           type: string
           x-nullable: false
       responses:
-        204:
+        202:
           description: delete cluster task has been accepted
           schema:
             $ref: '#/definitions/taskId'

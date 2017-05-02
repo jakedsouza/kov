@@ -1,14 +1,15 @@
-/*Package restapi API Specification for the vSphere Container Cluster Service (VCCS)
+/*Package restapi API Specification for the Kubernetes on vSphere (KOV)
 
-# RESTful API for the vSphere Container Cluster Service (VCCS)
+# RESTful API for the Kubernetes on vSphere (KOV)
 
 
 
     Schemes:
+      http
       https
     Host: localhost
     BasePath: /
-    Version: 0.2.0
+    Version: 0.1.0
 
     Consumes:
     - application/json

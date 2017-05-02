@@ -11,14 +11,14 @@ import (
 	"github.com/supervised-io/kov/gen/models"
 )
 
-// CreateClusterNoContentCode is the HTTP code returned for type CreateClusterNoContent
-const CreateClusterNoContentCode int = 204
+// CreateClusterAcceptedCode is the HTTP code returned for type CreateClusterAccepted
+const CreateClusterAcceptedCode int = 202
 
-/*CreateClusterNoContent create cluster task has been accepted
+/*CreateClusterAccepted create cluster task has been accepted
 
-swagger:response createClusterNoContent
+swagger:response createClusterAccepted
 */
-type CreateClusterNoContent struct {
+type CreateClusterAccepted struct {
 
 	/*
 	  In: Body
@@ -26,26 +26,26 @@ type CreateClusterNoContent struct {
 	Payload models.TaskID `json:"body,omitempty"`
 }
 
-// NewCreateClusterNoContent creates CreateClusterNoContent with default headers values
-func NewCreateClusterNoContent() *CreateClusterNoContent {
-	return &CreateClusterNoContent{}
+// NewCreateClusterAccepted creates CreateClusterAccepted with default headers values
+func NewCreateClusterAccepted() *CreateClusterAccepted {
+	return &CreateClusterAccepted{}
 }
 
-// WithPayload adds the payload to the create cluster no content response
-func (o *CreateClusterNoContent) WithPayload(payload models.TaskID) *CreateClusterNoContent {
+// WithPayload adds the payload to the create cluster accepted response
+func (o *CreateClusterAccepted) WithPayload(payload models.TaskID) *CreateClusterAccepted {
 	o.Payload = payload
 	return o
 }
 
-// SetPayload sets the payload to the create cluster no content response
-func (o *CreateClusterNoContent) SetPayload(payload models.TaskID) {
+// SetPayload sets the payload to the create cluster accepted response
+func (o *CreateClusterAccepted) SetPayload(payload models.TaskID) {
 	o.Payload = payload
 }
 
 // WriteResponse to the client
-func (o *CreateClusterNoContent) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+func (o *CreateClusterAccepted) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.WriteHeader(204)
+	rw.WriteHeader(202)
 	payload := o.Payload
 	if err := producer.Produce(rw, payload); err != nil {
 		panic(err) // let the recovery middleware deal with this

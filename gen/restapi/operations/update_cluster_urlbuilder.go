@@ -7,11 +7,16 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
+	"strings"
 )
 
 // UpdateClusterURL generates an URL for the update cluster operation
 type UpdateClusterURL struct {
+	Name string
+
 	_basePath string
+	// avoid unkeyed usage
+	_ struct{}
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
@@ -33,8 +38,14 @@ func (o *UpdateClusterURL) SetBasePath(bp string) {
 func (o *UpdateClusterURL) Build() (*url.URL, error) {
 	var result url.URL
 
-	var _path = "/clusters"
+	var _path = "/clusters/{name}"
 
+	name := o.Name
+	if name != "" {
+		_path = strings.Replace(_path, "{name}", name, -1)
+	} else {
+		return nil, errors.New("Name is required on UpdateClusterURL")
+	}
 	_basePath := o._basePath
 	result.Path = golangswaggerpaths.Join(_basePath, _path)
 
