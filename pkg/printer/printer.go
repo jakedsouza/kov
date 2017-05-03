@@ -26,7 +26,10 @@ type Printer struct {
 // New return Printer Obj
 func New(stdOut, stderr io.Writer) *Printer {
 	color.Output = stderr
-	return &Printer{out: stdOut, debug: true}
+	return &Printer{
+		out:   stdOut,
+		debug: false,
+	}
 }
 
 // Println Print a message to Stdout

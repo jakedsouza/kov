@@ -1,24 +1,25 @@
 ///////////////////////////////////////////////////////////////////////
-// Copyright (C) 2016 VMware, Inc. All rights reserved.
+// Copyright (C) 2017 VMware, Inc. All rights reserved.
 // -- VMware Confidential
 ///////////////////////////////////////////////////////////////////////
 
-package configfileutils
+package reader
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/supervised-io/kov/gen/models"
-	"github.com/supervised-io/kov/pkg/test_utils"
 )
 
 func TestReadConfigFile(t *testing.T) {
 	sampleJSON := `
 	{
 		"name":"kube",
-		"thumbprint":"123ASDF",
+		"thumbprint":"29:C9:DB:2A:78:AE:FA:F5:76:7F:D9:AB:1D:9E:C8:8E:2A:94:DB:D3",
 		"minNodes":1,
 		"maxNodes":3,
 		"noOfMasters":1,
@@ -42,7 +43,7 @@ func TestReadConfigFile(t *testing.T) {
 
 	sampleYML := `---
 name: kube
-thumbprint: 123ASDF
+thumbprint: 29:C9:DB:2A:78:AE:FA:F5:76:7F:D9:AB:1D:9E:C8:8E:2A:94:DB:D3
 minNodes: 1
 maxNodes: 3
 noOfMasters: 1
@@ -92,24 +93,25 @@ publicNetwork: testPublicNetwork`
 
 	for _, tc := range testcases {
 		// create the temp file
-		file, err := testutils.NewTempFile("", "testReadConfigFile", tc.extension)
+		file, err := ioutil.TempFile("", "testReadConfigFile"+tc.extension)
 		defer os.Remove(file.Name())
 		assert.NoError(t, err)
 		_, err1 := file.Write([]byte(tc.fileData))
 		assert.NoError(t, err1)
 
 		// read the file
-		configBytes, err2 := ReadConfigFile(file.Name())
+		configBytes, err2 := readConfigFile(file.Name())
 		assert.NoError(t, err2)
 
-		clusterCreateConfig, err3 := ParseClusterCreateConfig(configBytes)
+		clusterCreateConfig := &models.ClusterConfig{}
+		err3 := json.Unmarshal(configBytes, &clusterCreateConfig)
 		assert.NoError(t, err3)
 
-		sampleCreateClusterConfig, err4 := ParseClusterCreateConfig([]byte(sampleJSON))
+		sampleCreateClusterConfig := &models.ClusterConfig{}
+		err4 := json.Unmarshal([]byte(sampleJSON), &sampleCreateClusterConfig)
 		assert.NoError(t, err4)
 
 		assert.Equal(t, clusterCreateConfig, sampleCreateClusterConfig)
-
 	}
 }
 
@@ -117,7 +119,7 @@ func TestParseClusterCreateConfig(t *testing.T) {
 	sampleJSON := `
 	{
 		"name":"kube",
-		"thumbprint":"123ASDF",
+		"thumbprint":"29:C9:DB:2A:78:AE:FA:F5:76:7F:D9:AB:1D:9E:C8:8E:2A:94:DB:D3",
 		"minNodes":1,
 		"maxNodes":3,
 		"noOfMasters":1,
@@ -138,71 +140,64 @@ func TestParseClusterCreateConfig(t *testing.T) {
 		"publicNetwork":"testPublicNetwork"
 	}
 	`
-	var minNodeNum int32 = 1
-	var masterNum int32 = 1
-	var name = "kube"
-	var managementNetwork = "testNetwork"
+
+	var (
+		minNodeNum            int32 = 1
+		masterNum             int32 = 1
+		testMaxNodes          int32 = 3
+		testName                    = "kube"
+		testManagementNetwork       = "testNetwork"
+
+		name              = &testName
+		thumbprint        = "29:C9:DB:2A:78:AE:FA:F5:76:7F:D9:AB:1D:9E:C8:8E:2A:94:DB:D3"
+		minNodes          = &minNodeNum
+		maxNodes          = &testMaxNodes
+		noOfMasters       = &masterNum
+		masterSize        = models.InstanceSize("small")
+		nodeSize          = models.InstanceSize("small")
+		resourcePool      = "pool"
+		nodeResourcePools = []string{"pool1"}
+		managementNetwork = &testManagementNetwork
+		nodeNetwork       = "testNodeNetwork"
+		publicNetwork     = "testPublicNetwork"
+	)
 
 	testcases := []struct {
-		extension         string
-		sample            string
-		name              *string
-		thumbprint        string
-		minNodes          *int32
-		maxNodes          int32
-		noOfMasters       *int32
-		masterSize        models.InstanceSize
-		nodeSize          models.InstanceSize
-		resourcePool      string
-		nodeResourcePools []string
-		managementNetwork *string
-		nodeNetwork       string
-		publicNetwork     string
+		extension   string
+		fileData    string
+		expectedErr error
 	}{
 		{
-			extension:         ".json",
-			sample:            sampleJSON,
-			name:              &name,
-			thumbprint:        "123ASDF",
-			minNodes:          &minNodeNum,
-			maxNodes:          3,
-			noOfMasters:       &masterNum,
-			masterSize:        models.InstanceSize("small"),
-			nodeSize:          models.InstanceSize("small"),
-			resourcePool:      "pool",
-			nodeResourcePools: []string{"pool1"},
-			managementNetwork: &managementNetwork,
-			nodeNetwork:       "testNodeNetwork",
-			publicNetwork:     "testPublicNetwork",
+			extension:   ".json",
+			fileData:    sampleJSON,
+			expectedErr: nil,
 		},
 	}
 
 	for _, tc := range testcases {
 		// create the temp file
-		file, err := testutils.NewTempFile("", "testReadConfigFile", tc.extension)
+		file, err := ioutil.TempFile("", "testReadConfigFile"+tc.extension)
 		defer os.Remove(file.Name())
 		assert.NoError(t, err)
-		_, err1 := file.Write([]byte(tc.sample))
+		_, err1 := file.Write([]byte(tc.fileData))
 		assert.NoError(t, err1)
 
 		// read the file
-		configBytes, err2 := ReadConfigFile(file.Name())
+		clusterCreateConfig, err2 := ParseClusterCreateConfig(file.Name())
 		assert.NoError(t, err2)
 
-		clusterCreateConfig, err3 := ParseClusterCreateConfig(configBytes)
-		assert.NoError(t, err3)
+		assert.Equal(t, *clusterCreateConfig.Name, *name)
+		assert.Equal(t, clusterCreateConfig.Thumbprint, thumbprint)
+		assert.Equal(t, *clusterCreateConfig.MinNodes, *minNodes)
+		assert.Equal(t, clusterCreateConfig.MaxNodes, *maxNodes)
+		assert.Equal(t, *clusterCreateConfig.NoOfMasters, *noOfMasters)
+		assert.Equal(t, clusterCreateConfig.MasterSize, masterSize)
+		assert.Equal(t, clusterCreateConfig.NodeSize, nodeSize)
+		assert.Equal(t, clusterCreateConfig.ResourcePool, resourcePool)
+		assert.Equal(t, clusterCreateConfig.NodeResourcePools, nodeResourcePools)
+		assert.Equal(t, *clusterCreateConfig.ManagementNetwork, *managementNetwork)
+		assert.Equal(t, clusterCreateConfig.NodeNetwork, nodeNetwork)
+		assert.Equal(t, clusterCreateConfig.PublicNetwork, publicNetwork)
 
-		assert.Equal(t, *clusterCreateConfig.Name, *tc.name)
-		assert.Equal(t, clusterCreateConfig.Thumbprint, tc.thumbprint)
-		assert.Equal(t, *clusterCreateConfig.MinNodes, *tc.minNodes)
-		assert.Equal(t, clusterCreateConfig.MaxNodes, tc.maxNodes)
-		assert.Equal(t, *clusterCreateConfig.NoOfMasters, *tc.noOfMasters)
-		assert.Equal(t, clusterCreateConfig.MasterSize, tc.masterSize)
-		assert.Equal(t, clusterCreateConfig.NodeSize, tc.nodeSize)
-		assert.Equal(t, clusterCreateConfig.ResourcePool, tc.resourcePool)
-		assert.Equal(t, clusterCreateConfig.NodeResourcePools, tc.nodeResourcePools)
-		assert.Equal(t, *clusterCreateConfig.ManagementNetwork, *tc.managementNetwork)
-		assert.Equal(t, clusterCreateConfig.NodeNetwork, tc.nodeNetwork)
-		assert.Equal(t, clusterCreateConfig.PublicNetwork, tc.publicNetwork)
 	}
 }

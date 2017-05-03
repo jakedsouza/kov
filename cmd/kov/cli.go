@@ -12,7 +12,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/supervised-io/kov/pkg/printer_utils"
+	"github.com/supervised-io/kov/pkg/cluster"
+	"github.com/supervised-io/kov/pkg/printer"
 )
 
 // Cli struct for KOV Cli
@@ -29,6 +30,7 @@ type Cli struct {
 	v          *viper.Viper
 	clusterCmd *clusterCmd
 
+	cluster cluster.ClusterAPI
 	printer *printer.Printer
 }
 
@@ -36,32 +38,6 @@ const (
 	// CliProgram CLI program name
 	CliProgram = "kov"
 )
-
-var usageTemplate = `Usage:{{if .Runnable}}
-  {{if .HasAvailableFlags}}{{appendIfNotPresent .UseLine "[Options]"}}{{else}}{{.UseLine}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
-  {{ .CommandPath}} [command]{{end}}{{if gt .Aliases 0}}
-
-Aliases:
-  {{.NameAndAliases}}
-{{end}}{{if .HasExample}}
-
-Examples:
-{{ .Example }}{{end}}{{ if .HasAvailableSubCommands}}
-
-Commands:{{range .Commands}}{{if .IsAvailableCommand}}
-  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{ if .HasAvailableLocalFlags}}
-
-Options:
-{{.LocalFlags.FlagUsages | trimRightSpace}}{{end}}{{ if .HasAvailableInheritedFlags}}{{ if not .HasAvailableLocalFlags}}
-
-Options:{{end}}
-{{.InheritedFlags.FlagUsages | trimRightSpace}}{{end}}{{if .HasHelpSubCommands}}
-
-Additional help topics:{{range .Commands}}{{if .IsHelpCommand}}
-  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{ if .HasAvailableSubCommands }}
-
-Use "{{.CommandPath}} [command] --help" for more information about a command.{{end}}
-`
 
 // NewCli configures a new CLI for KOV.
 // Loads environment configuration and registers sub commands
@@ -75,15 +51,17 @@ func NewCli() *Cli {
 	cli.setDefaultConfig()
 	cli.rootCmd = &cobra.Command{
 		Use:   CliProgram,
-		Short: "Kubernetes On Vsphere CLI",
-		Long: `Kubernetes On Vsphere (KOV) is a command line interface for creating and managing cells.
+		Short: "Kubernetes On vSphere CLI",
+		Long: `Kubernetes On vSphere (KOV) is a command line interface for creating and managing clusters.
 To get started, visit https://github.com/supervised-io/kov`,
 		RunE: cli.usageRunner(),
 	}
-	cli.rootCmd.SetUsageTemplate(usageTemplate)
+	cli.rootCmd.SetUsageTemplate(cli.rootCmd.UsageTemplate())
 
 	cli.printer = printer.New(os.Stdout, os.Stderr)
 	cli.SetOutput(os.Stdout, os.Stderr)
+
+	cli.cluster = cluster.NewClusterClient()
 
 	cli.rootCmd.PersistentFlags().
 		BoolVarP(&cli.Verbose, "verbose", "v", cli.Verbose, "Output more information")
@@ -137,6 +115,11 @@ func (cli *Cli) Run() {
 	if err := cli.rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
+}
+
+// SetCluster set the cluster client of cli
+func (cli *Cli) SetCluster(cluster cluster.ClusterAPI) {
+	cli.cluster = cluster
 }
 
 // print usage of current command

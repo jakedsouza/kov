@@ -8,54 +8,33 @@ package main
 import (
 	"bytes"
 	"io/ioutil"
-	"net/http"
-	"net/url"
 	"os"
 	"testing"
 
-	"net/http/httptest"
-
 	"fmt"
 
-	"github.com/go-openapi/runtime"
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"github.com/supervised-io/kov/pkg/test_utils"
+	"github.com/supervised-io/kov/pkg/cluster"
+	"github.com/supervised-io/kov/pkg/configfile/reader"
 )
 
 func TestCreateCluster(t *testing.T) {
-
+	controller := gomock.NewController(t)
+	defer controller.Finish()
 	bufOut := &bytes.Buffer{}
 	bufErr := &bytes.Buffer{}
 
 	cli := NewCli()
 
-	const (
-		response      = http.StatusAccepted
+	var (
 		taskID        = `"1234-5678"`
-		taskResp      = `{"context":{"cellId":"cellname"},"id":"testjob","state":"completed"}`
-		configContent = `{"name":"kube","thumbprint":"123ASDF", "minNodes":1, "maxNodes": 3, "noOfMasters":1, "masterSize":"small","nodeSize":"small", "credentials":{"username":"testuser", "password":"testpassword!23"}, "resourcePool":"pool", "nodeResourcePools":["pool1"], "managementNetwork": "testNetwork", "nodeNetwork":"testNodeNetwork", "publicNetwork":"testPublicNetwork"}`
+		configContent = `{"name":"kube","thumbprint":"29:C9:DB:2A:78:AE:FA:F5:76:7F:D9:AB:1D:9E:C8:8E:2A:94:DB:D3", "minNodes":1, "maxNodes": 3, "noOfMasters":1, "masterSize":"small","nodeSize":"small", "credentials":{"username":"testuser", "password":"testpassword!23"}, "resourcePool":"pool", "nodeResourcePools":["pool1"], "managementNetwork": "testNetwork", "nodeNetwork":"testNodeNetwork", "publicNetwork":"testPublicNetwork"}`
 		clusterName   = "kube"
+		url           = "TestURL"
 	)
 
-	// test server
-	server := httptest.NewTLSServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		rw.Header().Add(runtime.HeaderContentType, "application/json")
-		// Post for run cluster
-		if req.Method == http.MethodPost {
-			rw.WriteHeader(http.StatusAccepted)
-			rw.Write([]byte(taskID))
-		}
-		// Get for job status
-		if req.Method == http.MethodGet {
-			rw.WriteHeader(http.StatusOK)
-			rw.Write([]byte(taskResp))
-		}
-	}))
-	defer server.Close()
-
-	u, _ := url.Parse(server.URL)
-
-	f, err := testutils.NewTempFile("", "", ".json")
+	f, err := ioutil.TempFile("", "testCreateClusterTmp.json")
 	ioutil.WriteFile(f.Name(), []byte(configContent), 0777)
 	defer os.Remove(f.Name())
 	assert.NoError(t, err)
@@ -64,8 +43,15 @@ func TestCreateCluster(t *testing.T) {
 
 	cli.clusterCmd = &clusterCmd{
 		configFile: f.Name(),
-		url:        u.Host,
+		url:        url,
 	}
+
+	clusterClient := cluster.NewMockClusterAPI(controller)
+	cli.SetCluster(clusterClient)
+	clusterConfig, err := reader.ParseClusterCreateConfig(f.Name())
+
+	clusterClient.EXPECT().CreateCluster(gomock.Eq(url), gomock.Eq(clusterConfig)).Times(1).Return(&taskID, nil)
+	clusterClient.EXPECT().GetTaskStatus(gomock.Eq(url), gomock.Eq(taskID)).Times(1).Return(true, nil)
 
 	err = createClusterRun(cli)
 	assert.NoError(t, err)

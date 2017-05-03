@@ -1,15 +1,21 @@
 ///////////////////////////////////////////////////////////////////////
-// Copyright (C) 2016 VMware, Inc. All rights reserved.
+// Copyright (C) 2017 VMware, Inc. All rights reserved.
 // -- VMware Confidential
 ///////////////////////////////////////////////////////////////////////
 
-package taskutils
+package task
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 // TestPollWait test poller wait function
 func TestPollWait(t *testing.T) {
 	called := 3
 	err := PollWait(func() (bool, error) {
-		called = called - 1
+		called--
 		if called == 0 {
 			return true, nil
 		}

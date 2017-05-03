@@ -1,9 +1,9 @@
 ///////////////////////////////////////////////////////////////////////
-// Copyright (C) 2016 VMware, Inc. All rights reserved.
+// Copyright (C) 2017 VMware, Inc. All rights reserved.
 // -- VMware Confidential
 ///////////////////////////////////////////////////////////////////////
 
-package kovclientutils
+package kovclient
 
 import (
 	"testing"
@@ -12,7 +12,7 @@ import (
 )
 
 // TestGetLCMClient test lcm client
-func TestGetKOVClient(t *testing.T) {
+func TestGetClient(t *testing.T) {
 	testcases := []struct {
 		host   string
 		outerr error
@@ -23,7 +23,7 @@ func TestGetKOVClient(t *testing.T) {
 		},
 	}
 	for _, tc := range testcases {
-		client, err := GetKOVClient(tc.host)
+		client, err := GetClient(tc.host)
 		assert.Equal(t, tc.outerr, err)
 		if err != nil {
 			assert.NotNil(t, client)

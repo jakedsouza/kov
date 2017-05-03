@@ -10,82 +10,43 @@ import (
 
 	"errors"
 
-	"github.com/go-openapi/swag"
-	"github.com/supervised-io/kov/gen/client/operations"
-	"github.com/supervised-io/kov/gen/models"
-	"github.com/supervised-io/kov/pkg/configfile_utils"
-	"github.com/supervised-io/kov/pkg/kovclient_utils"
+	"github.com/supervised-io/kov/pkg/configfile/reader"
 )
 
 func createClusterPre(cli *Cli) error {
 	if cli.clusterCmd.configFile == "" {
-		return errors.New("Configuration path not provided")
+		return errors.New("Configfile path not provided")
 	}
 	if cli.clusterCmd.url == "" {
-		return errors.New("KOV server endpoint not provided")
+		return errors.New("KOV endpoint not provided")
 	}
 	return nil
 }
 
 func createClusterRun(cli *Cli) error {
-	err := createCluster(cli)
-
-	return err
-}
-
-func createCluster(cli *Cli) error {
-	cli.printer.VerboseInfo("Creating cluster")
-
-	var clusterConfig *models.ClusterConfig
-	if cli.clusterCmd.configFile != "" {
-		bytes, err := configfileutils.ReadConfigFile(cli.clusterCmd.configFile)
-		if err != nil {
-			return err
-		}
-		config, err := configfileutils.ParseClusterCreateConfig(bytes)
-		if err != nil {
-			return err
-		}
-		clusterConfig = config
-	} else {
-		clusterConfig = &models.ClusterConfig{}
-	}
-
-	params := operations.NewCreateClusterParams().WithClusterConfig(clusterConfig)
-
-	kovClient, err := kovclientutils.GetKOVClient(cli.clusterCmd.url)
+	// read config from config file
+	clusterConfig, err := reader.ParseClusterCreateConfig(cli.clusterCmd.configFile)
 	if err != nil {
-		cli.printer.Error(fmt.Sprintf("Fatal Error Create Cluster : Create KOVClient error ErrorMsg %s", err))
+		cli.printer.Error(fmt.Sprintf("Creating cluster Error: error parsing config file"))
+		return err
+	}
+	// send create cluster request
+	cli.printer.Println(fmt.Sprintf("Creating cluster %s", *clusterConfig.Name))
+	taskID, err := cli.cluster.CreateCluster(cli.clusterCmd.url, clusterConfig)
+	if err != nil {
+		cli.printer.Error(fmt.Sprintf("Creating cluster Error: %s", err.Error()))
 		return err
 	}
 
-	// send request
-	resp, err := kovClient.CreateCluster(params)
-
+	// wait for the task to complete
+	cli.printer.Println(fmt.Sprintf("Starting task %s", *taskID))
+	err = waitForTask(cli, *taskID)
 	if err != nil {
-		var payload *models.Error
-		switch etp := err.(type) {
-		case *operations.CreateClusterConflict:
-			payload = etp.Payload
-
-			cli.printer.Fatal(fmt.Sprintf("Fatal Error Create Cluster Conflict: Code %d, ErrorMsg %s", payload.Code, *payload.Message))
-		default:
-			return fmt.Errorf("%s: %s \n", "Failed cluster create", err.Error())
-		}
-
-		if swag.StringValue(payload.Message) == "" {
-			msg := err.Error()
-			payload.Message = swag.String(msg)
-		}
-		return fmt.Errorf(err.Error(), swag.StringValue(payload.Message), swag.Int64Value(payload.Code))
+		cli.printer.Error(fmt.Sprintf("Creating cluster Error: %s", err.Error()))
+		return err
 	}
-
-	// TODO support async
-	cli.printer.Println(fmt.Sprintf("Creating cluster %s", *clusterConfig.Name))
-	err = waitForTask(cli, string(resp.Payload))
-	if err != nil {
-		return fmt.Errorf(err.Error(), clusterConfig.Name, err.Error())
-	}
+	cli.printer.Println(fmt.Sprintf("Task %s Completed", *taskID))
 	cli.printer.Println(fmt.Sprintf("Created cluster %s", *clusterConfig.Name))
+
 	return nil
 }
