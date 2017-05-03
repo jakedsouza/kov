@@ -10,12 +10,12 @@ import (
 )
 
 type clusterCmd struct {
-	cluster          string // cluster
 	configFile       string // path to a configuration file
 	output           string // output format
 	details          bool
 	timestamps       bool
 	isDefaultCluster bool
+	url              string // url of KOV server endpoint
 }
 
 func registerClusterCmds(cli *Cli) {
@@ -30,4 +30,17 @@ func registerClusterCmds(cli *Cli) {
 	}
 
 	cli.rootCmd.AddCommand(clusterCmd)
+
+	createClusterCmd := &cobra.Command{
+		Use:     "kov",
+		Short:   "KOV cluster related commands",
+		Long:    "Commands to deploy, list and delete a cluster on Vsphere",
+		Example: `kov create cluster kubernetes --url http://KOV_ENDPOINT --config config.json`,
+		PreRunE: cli.preRunner(createClusterPre),
+		RunE:    cli.runner(createCluster),
+	}
+	cli.rootCmd.AddCommand(createClusterCmd)
+
+	createClusterCmd.Flags().StringVarP(&cli.clusterCmd.configFile, "config", "c", "", "Path to a JSON or YAML configuration file for the cell")
+	createClusterCmd.Flags().StringVarP(&cli.clusterCmd.url, "url", "u", "", "url of KOV service")
 }

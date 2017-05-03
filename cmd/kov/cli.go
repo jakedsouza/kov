@@ -12,7 +12,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/supervised-io/kov/pkg/utils/printer"
+	"github.com/supervised-io/kov/pkg/printer_utils"
 )
 
 // Cli struct for KOV Cli
