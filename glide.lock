@@ -1,5 +1,5 @@
-hash: a3bc6460caddb5c688151d05604c462ccf61e7b6c058913f235353f74b59e3bb
-updated: 2017-04-29T20:01:08.039103209-07:00
+hash: 65fb3ba57532ba5fc19b07669a56a71208ae6fbfd10cb79bb655d8d195d99bc2
+updated: 2017-05-02T14:12:25.06834654-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 133eba7d8257761201f2d4d8dcbf774692fdb946
@@ -21,6 +21,8 @@ imports:
   version: 36d33bfe519efae5632669801b180bf1a245da3b
 - name: github.com/go-openapi/loads
   version: ad6217c63d9d12406790ee4acae2aaebd8dc63ec
+  subpackages:
+  - fmts
 - name: github.com/go-openapi/runtime
   version: 0cb5480dd0e075d0530ff20681dcd77c249501fb
   subpackages:
@@ -41,6 +43,8 @@ imports:
   version: 035dcd74f1f61e83debe1c22950dc53556e7e4b2
 - name: github.com/gorilla/context
   version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gosuri/uilive
+  version: ac356e6e42cd31fcef8e6aec13ae9ed6fe87713e
 - name: github.com/hashicorp/hcl
   version: 7fa7fff964d035e8a162cce3a164b3ad02ad651b
   subpackages:
@@ -70,10 +74,11 @@ imports:
   version: 5411d3eea5978e6cdc258b30de592b60df6aba96
   repo: https://github.com/mattn/go-colorable
 - name: github.com/mattn/go-isatty
-  version: 57fdcb988a5c543893cc61bce354a6e24ab70022
-  repo: https://github.com/mattn/go-isatty
+  version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/mitchellh/mapstructure
   version: cc8532a8e9a55ea36402aa21efdf403a60d34096
+- name: github.com/pborman/uuid
+  version: 1b00554d822231195d1babd97ff4a781231955c9
 - name: github.com/pelletier/go-buffruneio
   version: c37440a7cf42ac63b919c752ca73a85067e05992
 - name: github.com/pelletier/go-toml
@@ -91,17 +96,19 @@ imports:
 - name: github.com/spf13/cast
   version: acbeb36b902d72a7a4c18e8f3241075e7ab763e4
 - name: github.com/spf13/cobra
-  version: 7b1b6e8dc027253d45fc029bc269d1c019f83a34
+  version: 8f0203be891287870100e4af46262cdf4a4261d1
 - name: github.com/spf13/jwalterweatherman
   version: fa7ca7e836cf3a8bb4ebf799f472c12d7e903d66
 - name: github.com/spf13/pflag
-  version: f1d95a35e132e8a1868023a08932b14f0b8b8fcb
+  version: c990990ab4981d84da820b7b00c85139ca150b5f
 - name: github.com/spf13/viper
   version: 0967fc9aceab2ce9da34061253ac10fb99bba5b2
+- name: github.com/tj/go-spin
+  version: 866762925be273d8db6a8b816f359ca41d61bcdb
 - name: github.com/tylerb/graceful
   version: 4654dfbb6ad53cb5e27f37d99b02e16c1872fbbb
 - name: golang.org/x/net
-  version: da118f7b8e5954f39d0d2130ab35d4bf0e3cb344
+  version: 0819898fb4973868bba6de59b6aaad75beea9a6a
   subpackages:
   - context
   - context/ctxhttp
