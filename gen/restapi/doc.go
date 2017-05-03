@@ -5,7 +5,6 @@
 
 
     Schemes:
-      http
       https
     Host: localhost
     BasePath: /

@@ -316,6 +316,7 @@ definitions:
         format: int32
         description: the number of master nodes to create
         default: 1
+        minimum: 1
       masterSize:
         allOf:
           - $ref: "#/definitions/instanceSize"
@@ -361,6 +362,7 @@ definitions:
         type: string
         description: the cluster name, should be valid for use in dns names
         readOnly: true
+        pattern: '^[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?(\.[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?)*$'
       credentials:
         $ref: "#/definitions/credentials"
       thumbprint:
@@ -382,6 +384,7 @@ definitions:
         format: int32
         description: the number of master nodes to create
         default: 1
+        minimum: 1
       storageClasses:
         type: array
         items:

@@ -19,7 +19,6 @@ func init() {
     "application/json"
   ],
   "schemes": [
-    "http",
     "https"
   ],
   "swagger": "2.0",
@@ -100,7 +99,7 @@ func init() {
           {
             "type": "string",
             "x-nullable": false,
-            "description": "the cluster name to be deleted",
+            "description": "the cluster name to be updated",
             "name": "name",
             "in": "path",
             "required": true
@@ -266,7 +265,8 @@ func init() {
           "description": "the number of master nodes to create",
           "type": "integer",
           "format": "int32",
-          "default": 1
+          "default": 1,
+          "minimum": 1
         },
         "nodeNetwork": {
           "description": "the network used for node-to-node communication, defaults to management network",
@@ -346,13 +346,15 @@ func init() {
         "name": {
           "description": "the cluster name, should be valid for use in dns names",
           "type": "string",
+          "pattern": "^[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?(\\.[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?)*$",
           "readOnly": true
         },
         "noOfMasters": {
           "description": "the number of master nodes to create",
           "type": "integer",
           "format": "int32",
-          "default": 1
+          "default": 1,
+          "minimum": 1
         },
         "nodeResourcePools": {
           "type": "array",

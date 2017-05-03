@@ -43,7 +43,7 @@ type UpdateClusterParams struct {
 	  In: body
 	*/
 	ClusterUpdateConfig *models.ClusterUpdateConfig
-	/*the cluster name to be deleted
+	/*the cluster name to be updated
 	  Required: true
 	  In: path
 	*/

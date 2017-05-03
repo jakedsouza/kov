@@ -44,6 +44,7 @@ type ClusterConfig struct {
 
 	// the number of master nodes to create
 	// Required: true
+	// Minimum: 1
 	NoOfMasters *int32 `json:"noOfMasters"`
 
 	// the network used for node-to-node communication, defaults to management network
@@ -218,6 +219,10 @@ func (m *ClusterConfig) validateName(formats strfmt.Registry) error {
 func (m *ClusterConfig) validateNoOfMasters(formats strfmt.Registry) error {
 
 	if err := validate.Required("noOfMasters", "body", m.NoOfMasters); err != nil {
+		return err
+	}
+
+	if err := validate.MinimumInt("noOfMasters", "body", int64(*m.NoOfMasters), 1, false); err != nil {
 		return err
 	}
 

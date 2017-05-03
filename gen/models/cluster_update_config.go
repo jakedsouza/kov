@@ -31,10 +31,12 @@ type ClusterUpdateConfig struct {
 	// the cluster name, should be valid for use in dns names
 	// Required: true
 	// Read Only: true
+	// Pattern: ^[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?(\.[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?)*$
 	Name string `json:"name"`
 
 	// the number of master nodes to create
 	// Required: true
+	// Minimum: 1
 	NoOfMasters *int32 `json:"noOfMasters"`
 
 	// node resource pools
@@ -132,12 +134,20 @@ func (m *ClusterUpdateConfig) validateName(formats strfmt.Registry) error {
 		return err
 	}
 
+	if err := validate.Pattern("name", "body", string(m.Name), `^[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?(\.[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?)*$`); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func (m *ClusterUpdateConfig) validateNoOfMasters(formats strfmt.Registry) error {
 
 	if err := validate.Required("noOfMasters", "body", m.NoOfMasters); err != nil {
+		return err
+	}
+
+	if err := validate.MinimumInt("noOfMasters", "body", int64(*m.NoOfMasters), 1, false); err != nil {
 		return err
 	}
 
