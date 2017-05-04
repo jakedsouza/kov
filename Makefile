@@ -10,11 +10,13 @@ GIT_VERSION = $(shell git describe --tags)
 
 .PHONY: check
 check: goversion checkfmt swagger-validate ## Runs static code analysis checks
+	@echo running header check ...
+	hack/header-check.sh
+
 	@echo running metalint ...
 	gometalinter --vendored-linters --install
 	gometalinter --vendored-linters --vendor --disable=gotype --errors --fast --deadline=60s   ./...
-	@echo running header check ...
-	hack/header-check.sh
+
 
 .PHONY: update-deps
 update-deps: ## Updates the dependencies with flattened vendor and without test files
@@ -55,7 +57,7 @@ clean: ## Clean all modified files
 
 .PHONY: generate
 generate: ## run go generate
-	$(GO) generate ./cmd
+	$(GO) generate .
 
 .PHONY: generate-fmt
 generate-fmt: generate fmt ## Run go generate and fix go-fmt and headers
