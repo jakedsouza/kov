@@ -1,5 +1,5 @@
 hash: 65fb3ba57532ba5fc19b07669a56a71208ae6fbfd10cb79bb655d8d195d99bc2
-updated: 2017-05-02T14:12:25.06834654-07:00
+updated: 2017-05-04T11:04:07.528714182-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 133eba7d8257761201f2d4d8dcbf774692fdb946
@@ -21,8 +21,6 @@ imports:
   version: 36d33bfe519efae5632669801b180bf1a245da3b
 - name: github.com/go-openapi/loads
   version: ad6217c63d9d12406790ee4acae2aaebd8dc63ec
-  subpackages:
-  - fmts
 - name: github.com/go-openapi/runtime
   version: 0cb5480dd0e075d0530ff20681dcd77c249501fb
   subpackages:
@@ -74,7 +72,8 @@ imports:
   version: 5411d3eea5978e6cdc258b30de592b60df6aba96
   repo: https://github.com/mattn/go-colorable
 - name: github.com/mattn/go-isatty
-  version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
+  version: 57fdcb988a5c543893cc61bce354a6e24ab70022
+  repo: https://github.com/mattn/go-isatty
 - name: github.com/mitchellh/mapstructure
   version: cc8532a8e9a55ea36402aa21efdf403a60d34096
 - name: github.com/pborman/uuid
@@ -82,7 +81,7 @@ imports:
 - name: github.com/pelletier/go-buffruneio
   version: c37440a7cf42ac63b919c752ca73a85067e05992
 - name: github.com/pelletier/go-toml
-  version: fe206efb84b2bc8e8cfafe6b4c1826622be969e3
+  version: 97253b98df84f9eef872866d079e74b8265150f1
 - name: github.com/PuerkitoBio/purell
   version: b938d81255b5473c57635324295cb0fe398c7a58
 - name: github.com/PuerkitoBio/urlesc
@@ -103,12 +102,10 @@ imports:
   version: c990990ab4981d84da820b7b00c85139ca150b5f
 - name: github.com/spf13/viper
   version: 0967fc9aceab2ce9da34061253ac10fb99bba5b2
-- name: github.com/tj/go-spin
-  version: 866762925be273d8db6a8b816f359ca41d61bcdb
 - name: github.com/tylerb/graceful
   version: 4654dfbb6ad53cb5e27f37d99b02e16c1872fbbb
 - name: golang.org/x/net
-  version: 0819898fb4973868bba6de59b6aaad75beea9a6a
+  version: feeb485667d1fdabe727840fe00adc22431bc86e
   subpackages:
   - context
   - context/ctxhttp
