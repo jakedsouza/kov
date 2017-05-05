@@ -1,3 +1,7 @@
+///////////////////////////////////////////////////////////////////////
+// Copyright (C) 2017 VMware, Inc. All rights reserved.
+// -- VMware Confidential
+///////////////////////////////////////////////////////////////////////
 /*Package restapi API Specification for the Kubernetes on vSphere (KOV)
 
 # RESTful API for the Kubernetes on vSphere (KOV)
