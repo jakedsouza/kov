@@ -64,11 +64,11 @@ generate-fmt: generate fmt ## Run go generate and fix go-fmt and headers
 	./hack/header-check.sh fix
 
 .PHONY: cli-dev
-cli-dev: check generate-fmt ## Generates the cli for dev
+cli-dev: generate-fmt check ## Generates the cli for dev
 	@DEV=1 ./hack/build.sh
 
-.PHONY: cli
-cli: check generate-fmt ## Generates the cli binary
+.PHONY: cli-drone
+cli-drone: check ## Generates the cli binary
 	@DEV=0 ./hack/build.sh
 
 .PHONY: test
