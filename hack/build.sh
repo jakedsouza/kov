@@ -31,6 +31,13 @@ if [ "${DEV}" = "1" ]; then
     XC_ARCH=$(go env GOARCH)
 fi
 
+# strip debug symbols
+LDFLAGS="-s -w"
+# inject channel
+LDFLAGS="$LDFLAGS -X github.com/supervised-io/kov.Version='${GIT_DESCRIBE}'"
+# inject commit
+LDFLAGS="$LDFLAGS -X github.com/supervised-io/kov.Commit='${GIT_COMMIT}'"
+
 # Build!
 echo "==> Building..."
 "`which gox`" \
@@ -38,7 +45,7 @@ echo "==> Building..."
     -os="${XC_OS}" \
     -arch="${XC_ARCH}" \
     -osarch="!darwin/arm" \
-    -ldflags "-X github.com/supervised-io/kov.Commit='${GIT_COMMIT}' -X github.com/supervised-io/kov.Version='${GIT_DESCRIBE}'" \
+    -ldflags "${LDFLAGS}" \
     -output "bin/${BINARY_NAME}-{{.OS}}-{{.Arch}}/${BINARY_NAME}" \
     ./cmd/kov/...
 

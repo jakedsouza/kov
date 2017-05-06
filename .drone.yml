@@ -1,0 +1,26 @@
+---
+workspace:
+  base: /go
+  path: src/github.com/supervised-io/kov
+
+pipeline:
+  test_and_build:
+    image: casualjim/golang-builder
+    pull: true
+    commands:
+      - "echo \"GOPATH: $GOPATH\""
+      - "echo \"pwd: $(pwd)\""
+      - ./hack/devtools.sh
+      - make test
+      - make cli-drone
+
+  slack:
+    image: plugins/slack
+    channel: vic-kov
+    username: drone
+    icon_emoji: ':drone:'
+    when:
+      repo: supervised-io/kov
+      event: [ push, tag ]
+      branch: [ master ]
+      failure: true
