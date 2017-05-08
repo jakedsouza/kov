@@ -1,8 +1,8 @@
-hash: 65fb3ba57532ba5fc19b07669a56a71208ae6fbfd10cb79bb655d8d195d99bc2
-updated: 2017-05-05T14:37:54.126982349-07:00
+hash: 144ecd9450ba00d4fe80acc43c63296cf5d3dc7183dc733e465bdb1734fab0be
+updated: 2017-05-08T14:47:03.599485705-07:00
 imports:
 - name: github.com/asaskevich/govalidator
-  version: 133eba7d8257761201f2d4d8dcbf774692fdb946
+  version: 38ddb4612a5dfc2878731749ee825853d9f0aaa1
 - name: github.com/casualjim/middlewares
   version: 54f7c1c2c35ff3150d1f31fcf7dd64ede0d65598
 - name: github.com/docker/go-units
@@ -39,6 +39,10 @@ imports:
   version: 24ebf76d720bab64f62824d76bced3184a65490d
 - name: github.com/go-openapi/validate
   version: 035dcd74f1f61e83debe1c22950dc53556e7e4b2
+- name: github.com/golang/mock
+  version: bd3c8e81be01eef76d4b503f5e687d2d1354d2d9
+  subpackages:
+  - gomock
 - name: github.com/gorilla/context
   version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
 - name: github.com/gosuri/uilive
@@ -77,11 +81,11 @@ imports:
 - name: github.com/mitchellh/mapstructure
   version: cc8532a8e9a55ea36402aa21efdf403a60d34096
 - name: github.com/pborman/uuid
-  version: a97ce2ca70fa5a848076093f05e639a89ca34d06
+  version: 1b00554d822231195d1babd97ff4a781231955c9
 - name: github.com/pelletier/go-buffruneio
   version: c37440a7cf42ac63b919c752ca73a85067e05992
 - name: github.com/pelletier/go-toml
-  version: 97253b98df84f9eef872866d079e74b8265150f1
+  version: 23f644976aa7c724adf4aec911dadf4af17840ab
 - name: github.com/PuerkitoBio/purell
   version: b938d81255b5473c57635324295cb0fe398c7a58
 - name: github.com/PuerkitoBio/urlesc
@@ -95,11 +99,11 @@ imports:
 - name: github.com/spf13/cast
   version: acbeb36b902d72a7a4c18e8f3241075e7ab763e4
 - name: github.com/spf13/cobra
-  version: db6b9a8b3f3f400c8ecb4a4d7d02245b8facad66
+  version: d236d298109208d194bf9c305dda03acbd1cc8d2
 - name: github.com/spf13/jwalterweatherman
   version: fa7ca7e836cf3a8bb4ebf799f472c12d7e903d66
 - name: github.com/spf13/pflag
-  version: 80fe0fb4eba54167e2ccae1c6c950e72abf61b73
+  version: e57e3eeb33f795204c1ca35f56c44f83227c6e66
 - name: github.com/spf13/viper
   version: 0967fc9aceab2ce9da34061253ac10fb99bba5b2
 - name: github.com/tylerb/graceful
