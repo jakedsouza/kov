@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e -o pipefail
+
+echo "Running make check"
+make check
+
