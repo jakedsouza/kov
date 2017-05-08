@@ -68,7 +68,7 @@ cli-dev: generate-fmt check ## Generates the cli for dev
 	@DEV=1 ./hack/build.sh
 
 .PHONY: cli-drone
-cli-drone: check ## Generates the cli binary
+cli-drone: check ## Generates the cli binary for drone ci
 	@DEV=0 ./hack/build.sh
 
 .PHONY: test

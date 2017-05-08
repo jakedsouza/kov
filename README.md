@@ -1,5 +1,6 @@
 # Kubernetes on vSphere
 
+[![Build Status](https://ci.vcna.io/api/badges/supervised-io/kov/status.svg)](https://ci.vcna.io/supervised-io/kov)
 
 ## Get the latest CLI off master 
 
@@ -15,22 +16,26 @@
 
 ```sh
 $ make help
+build-vm-template              Builds a vm template for the kubernetes components
 check                          Runs static code analysis checks
 checkfmt                       Checks code format
 clean                          Clean all modified files
 cli-dev                        Generates the cli for dev
+cli-drone                      Generates the cli binary for drone
 distclean                      Clean ALL files including ignored ones
 fmt                            format go code
+generate-fmt                   Run go generate and fix go-fmt and headers
 generate                       run go generate
 goversion                      Checks if installed go version is latest
 help                           Display make help
 test                           Run unit tests
+update-deps                    Updates the dependencies with flattened vendor and without test files
 ```
 
-### Build Binarys
+### Build Binaries
 
 ```sh
-$ make cli
+$ make cli-dev
 ```
 
 ## Modular initialization
