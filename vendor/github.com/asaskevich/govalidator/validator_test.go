@@ -549,6 +549,8 @@ func TestIsEmail(t *testing.T) {
 		{"foo@bar.com.au", true},
 		{"foo+bar@bar.com", true},
 		{"foo@bar.coffee", true},
+		{"foo@bar.coffee..coffee", false},
+		{"foo@bar.bar.coffee", true},
 		{"foo@bar.中文网", true},
 		{"invalidemail@", false},
 		{"invalid.com", false},
@@ -658,6 +660,7 @@ func TestIsURL(t *testing.T) {
 		{"http://cant_end_with_underescore_", false},
 		{"foo_bar.example.com", true},
 		{"foo_bar_fizz_buzz.example.com", true},
+		{"http://hello_world.example.com", true},
 	}
 	for _, test := range tests {
 		actual := IsURL(test.param)
@@ -1508,6 +1511,8 @@ func TestIsDNSName(t *testing.T) {
 		{"a.bc", true},
 		{"localhost.local", true},
 		{"localhost.localdomain.intern", true},
+		{"l.local.intern", true},
+		{"ru.link.n.svpncloud.com", true},
 		{"-localhost", false},
 		{"localhost.-localdomain", false},
 		{"localhost.localdomain.-int", false},

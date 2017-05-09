@@ -572,6 +572,14 @@ func ValidateStruct(s interface{}) (bool, error) {
 		if typeField.PkgPath != "" {
 			continue // Private field
 		}
+		structResult := true
+		if valueField.Kind() == reflect.Struct {
+			var err error
+			structResult, err = ValidateStruct(valueField.Interface())
+			if err != nil {
+				errs = append(errs, err)
+			}
+		}
 		resultField, err2 := typeCheck(valueField, typeField, val, nil)
 		if err2 != nil {
 
@@ -596,7 +604,7 @@ func ValidateStruct(s interface{}) (bool, error) {
 
 			errs = append(errs, err2)
 		}
-		result = result && resultField
+		result = result && resultField && structResult
 	}
 	if len(errs) > 0 {
 		err = errs
@@ -707,6 +715,18 @@ func StringLength(str string, params ...string) bool {
 		min, _ := ToInt(params[0])
 		max, _ := ToInt(params[1])
 		return strLength >= int(min) && strLength <= int(max)
+	}
+
+	return false
+}
+
+// Range check string's length
+func Range(str string, params ...string) bool {
+	if len(params) == 2 {
+		value, _ := ToFloat(str)
+		min, _ := ToFloat(params[0])
+		max, _ := ToFloat(params[1])
+		return InRange(value,min,max)
 	}
 
 	return false
