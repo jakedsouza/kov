@@ -19,34 +19,36 @@ import (
 
 // ClusterAPI interface
 type ClusterAPI interface {
-	CreateCluster(string, *models.ClusterConfig) (*string, error)
-	GetTaskStatus(string, string) (bool, error)
+	CreateCluster(*models.ClusterConfig) (*string, error)
+	GetTaskStatus(string) (bool, error)
 }
 
 // Client Cluster client for sending cluster request
 type client struct {
+	kovClient *operations.Client
 }
 
 // NewClusterClient return a cluster client
-func NewClusterClient() ClusterAPI {
-	return &client{}
-}
-
-// CreateCluster Sent create cluster request and return task id or error
-func (c *client) CreateCluster(url string, clusterConfig *models.ClusterConfig) (*string, error) {
-	params := operations.NewCreateClusterParams().WithClusterConfig(clusterConfig)
-
+func NewClusterClient(url string) (ClusterAPI, error) {
 	kovClient, err := kovclient.GetClient(url)
 	if err != nil {
 		return nil, err
 	}
+	return &client{kovClient: kovClient}, nil
+}
+
+// CreateCluster Sent create cluster request and return task id or error
+func (c *client) CreateCluster(clusterConfig *models.ClusterConfig) (*string, error) {
+	params := operations.NewCreateClusterParams().WithClusterConfig(clusterConfig)
 
 	// send request
-	resp, err := kovClient.CreateCluster(params)
+	resp, err := c.kovClient.CreateCluster(params)
 
 	if err != nil {
 		var payload *models.Error
 		switch etp := err.(type) {
+		case *operations.CreateClusterDefault:
+			payload = etp.Payload
 		case *operations.CreateClusterConflict:
 			payload = etp.Payload
 		default:
@@ -66,26 +68,17 @@ func (c *client) CreateCluster(url string, clusterConfig *models.ClusterConfig) 
 }
 
 // GetTaskStatus process task status response
-func (c *client) GetTaskStatus(url, taskID string) (bool, error) {
+func (c *client) GetTaskStatus(taskID string) (bool, error) {
 	params := operations.NewGetTaskParams().WithTaskid(taskID)
-	kovClient, err := kovclient.GetClient(url)
-	if err != nil {
-		return false, err
-	}
 
-	resp, err := kovClient.GetTask(params)
+	resp, err := c.kovClient.GetTask(params)
 	if err != nil {
 		var payload *models.Error
 		switch etp := err.(type) {
 		case *operations.GetTaskNotFound:
 			payload = etp.Payload
-			return false, nil
 		case *operations.GetTaskDefault:
 			payload = etp.Payload
-			code := etp.Code()
-			if code/100 != 2 {
-				return false, errors.New("Error get task: GetTaskDefault")
-			}
 		default:
 			return false, err
 		}

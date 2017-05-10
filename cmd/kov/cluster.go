@@ -36,6 +36,6 @@ func registerClusterCmds(cli *Cli) {
 	clusterCmd.AddCommand(createClusterCmd)
 	cli.rootCmd.AddCommand(clusterCmd)
 
-	createClusterCmd.Flags().StringVarP(&cli.clusterCmd.configFile, "config", "c", "", "Path to a JSON or YAML configuration file for the cluster")
-	createClusterCmd.Flags().StringVarP(&cli.clusterCmd.url, "url", "u", "", "url of KOV endpoint")
+	createClusterCmd.Flags().StringVarP(&cli.clusterCmd.configFile, "config", "c", "", "path to a JSON or YAML configuration file for the cluster")
+	createClusterCmd.Flags().StringVarP(&cli.clusterCmd.url, "url", "u", "", "url of KOV endpoint. Could also read from environment variable KOV_ENDPOINT")
 }

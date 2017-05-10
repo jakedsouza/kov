@@ -122,3 +122,5 @@ func (d *dynamicModule) Reload(app Application) error {
 	}
 	return nil
 }
+
+//go:generate mockgen -source=pkg/cluster/client.go  -destination pkg/cluster/client_mock.go -package cluster

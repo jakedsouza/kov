@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestGetLCMClient test lcm client
+// TestGetKovClient test kov client
 func TestGetClient(t *testing.T) {
 	testcases := []struct {
 		host   string

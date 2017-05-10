@@ -37,6 +37,8 @@ type Cli struct {
 const (
 	// CliProgram CLI program name
 	CliProgram = "kov"
+	// kov ENDPOINT ENV
+	kovEndpoint = "ENDPOINT"
 )
 
 // NewCli configures a new CLI for KOV.
@@ -56,12 +58,9 @@ func NewCli() *Cli {
 To get started, visit https://github.com/supervised-io/kov`,
 		RunE: cli.usageRunner(),
 	}
-	cli.rootCmd.SetUsageTemplate(cli.rootCmd.UsageTemplate())
 
 	cli.printer = printer.New(os.Stdout, os.Stderr)
 	cli.SetOutput(os.Stdout, os.Stderr)
-
-	cli.cluster = cluster.NewClusterClient()
 
 	cli.rootCmd.PersistentFlags().
 		BoolVarP(&cli.Verbose, "verbose", "v", cli.Verbose, "Output more information")
@@ -87,6 +86,7 @@ To get started, visit https://github.com/supervised-io/kov`,
 func (cli *Cli) setDefaultConfig() {
 	cli.v.SetDefault("verbose", false)
 	cli.v.SetDefault("debug", false)
+	cli.v.SetDefault(kovEndpoint, "")
 	cli.v.SetConfigName("config")
 	cli.v.SetEnvPrefix("KOV")
 	cli.v.AutomaticEnv()

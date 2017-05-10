@@ -19,7 +19,7 @@ dir=$(dirname $0)
 # list any files (or patterns) to explicitly exclude from coverage
 # you should have a pretty good reason before putting items here
 # exclude_files=(
-#     "/cmd/cello/commands/daemon.go"
+#     "/cmd/cli.go"
 # )
 
 join() { local IFS="$1"; shift; echo "$*"; }

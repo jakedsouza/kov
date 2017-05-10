@@ -35,24 +35,24 @@ func (_m *MockClusterAPI) EXPECT() *_MockClusterAPIRecorder {
 	return _m.recorder
 }
 
-func (_m *MockClusterAPI) CreateCluster(_param0 string, _param1 *models.ClusterConfig) (*string, error) {
-	ret := _m.ctrl.Call(_m, "CreateCluster", _param0, _param1)
+func (_m *MockClusterAPI) CreateCluster(_param0 *models.ClusterConfig) (*string, error) {
+	ret := _m.ctrl.Call(_m, "CreateCluster", _param0)
 	ret0, _ := ret[0].(*string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-func (_mr *_MockClusterAPIRecorder) CreateCluster(arg0, arg1 interface{}) *gomock.Call {
-	return _mr.mock.ctrl.RecordCall(_mr.mock, "CreateCluster", arg0, arg1)
+func (_mr *_MockClusterAPIRecorder) CreateCluster(arg0 interface{}) *gomock.Call {
+	return _mr.mock.ctrl.RecordCall(_mr.mock, "CreateCluster", arg0)
 }
 
-func (_m *MockClusterAPI) GetTaskStatus(_param0 string, _param1 string) (bool, error) {
-	ret := _m.ctrl.Call(_m, "GetTaskStatus", _param0, _param1)
+func (_m *MockClusterAPI) GetTaskStatus(_param0 string) (bool, error) {
+	ret := _m.ctrl.Call(_m, "GetTaskStatus", _param0)
 	ret0, _ := ret[0].(bool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-func (_mr *_MockClusterAPIRecorder) GetTaskStatus(arg0, arg1 interface{}) *gomock.Call {
-	return _mr.mock.ctrl.RecordCall(_mr.mock, "GetTaskStatus", arg0, arg1)
+func (_mr *_MockClusterAPIRecorder) GetTaskStatus(arg0 interface{}) *gomock.Call {
+	return _mr.mock.ctrl.RecordCall(_mr.mock, "GetTaskStatus", arg0)
 }

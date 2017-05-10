@@ -7,9 +7,11 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"errors"
 
+	"github.com/supervised-io/kov/pkg/cluster"
 	"github.com/supervised-io/kov/pkg/configfile/reader"
 )
 
@@ -18,8 +20,17 @@ func createClusterPre(cli *Cli) error {
 		return errors.New("Configfile path not provided")
 	}
 	if cli.clusterCmd.url == "" {
-		return errors.New("KOV endpoint not provided")
+		if cli.v.Get(kovEndpoint) == "" {
+			return errors.New("KOV endpoint not provided")
+		}
+		cli.clusterCmd.url = cli.v.Get(kovEndpoint).(string)
 	}
+	var err error
+	cli.cluster, err = cluster.NewClusterClient(strings.TrimPrefix(strings.TrimPrefix(cli.clusterCmd.url, "https://"), "http://"))
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -32,7 +43,7 @@ func createClusterRun(cli *Cli) error {
 	}
 	// send create cluster request
 	cli.printer.Println(fmt.Sprintf("Creating cluster %s", *clusterConfig.Name))
-	taskID, err := cli.cluster.CreateCluster(cli.clusterCmd.url, clusterConfig)
+	taskID, err := cli.cluster.CreateCluster(clusterConfig)
 	if err != nil {
 		cli.printer.Error(fmt.Sprintf("Creating cluster Error: %s", err.Error()))
 		return err

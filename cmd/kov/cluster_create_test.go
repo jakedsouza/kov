@@ -50,8 +50,8 @@ func TestCreateCluster(t *testing.T) {
 	cli.SetCluster(clusterClient)
 	clusterConfig, err := reader.ParseClusterCreateConfig(f.Name())
 
-	clusterClient.EXPECT().CreateCluster(gomock.Eq(url), gomock.Eq(clusterConfig)).Times(1).Return(&taskID, nil)
-	clusterClient.EXPECT().GetTaskStatus(gomock.Eq(url), gomock.Eq(taskID)).Times(1).Return(true, nil)
+	clusterClient.EXPECT().CreateCluster(gomock.Eq(clusterConfig)).Times(1).Return(&taskID, nil)
+	clusterClient.EXPECT().GetTaskStatus(gomock.Eq(taskID)).Times(1).Return(true, nil)
 
 	err = createClusterRun(cli)
 	assert.NoError(t, err)
