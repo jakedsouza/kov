@@ -1,8 +1,8 @@
-hash: 144ecd9450ba00d4fe80acc43c63296cf5d3dc7183dc733e465bdb1734fab0be
-updated: 2017-05-08T14:47:03.599485705-07:00
+hash: 5fb39d3acbcf7d3997981e0df17b1abd178a7b0358d7be7810f650c91cc76495
+updated: 2017-05-12T13:25:57.108919098-07:00
 imports:
 - name: github.com/asaskevich/govalidator
-  version: 38ddb4612a5dfc2878731749ee825853d9f0aaa1
+  version: 27f7dc29434954cbdc252bd5324fa04810eff042
 - name: github.com/casualjim/middlewares
   version: 54f7c1c2c35ff3150d1f31fcf7dd64ede0d65598
 - name: github.com/docker/go-units
@@ -21,6 +21,8 @@ imports:
   version: 36d33bfe519efae5632669801b180bf1a245da3b
 - name: github.com/go-openapi/loads
   version: ad6217c63d9d12406790ee4acae2aaebd8dc63ec
+  subpackages:
+  - fmts
 - name: github.com/go-openapi/runtime
   version: 2e9e988df6c290425033bacd425e008950c96be6
   subpackages:
@@ -47,8 +49,10 @@ imports:
   version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
 - name: github.com/gosuri/uilive
   version: ac356e6e42cd31fcef8e6aec13ae9ed6fe87713e
+- name: github.com/gosuri/uitable
+  version: 36ee7e946282a3fb1cfecd476ddc9b35d8847e42
 - name: github.com/hashicorp/hcl
-  version: a4b07c25de5ff55ad3b8936cea69a79a3d95a855
+  version: 392dba7d905ed5d04a5794ba89f558b27e2ba1ca
   subpackages:
   - hcl/ast
   - hcl/parser
@@ -63,7 +67,7 @@ imports:
 - name: github.com/justinas/alice
   version: 052b8b6c18edb9db317af86806d8e00ebaa94160
 - name: github.com/kardianos/osext
-  version: 9d302b58e975387d0b4d9be876622c86cefe64be
+  version: ae77be60afb1dcacde03767a8c37337fad28ac14
 - name: github.com/magiconair/properties
   version: 51463bfca2576e06c62a8504b5c0f06d61312647
 - name: github.com/mailru/easyjson
@@ -85,7 +89,7 @@ imports:
 - name: github.com/pelletier/go-buffruneio
   version: c37440a7cf42ac63b919c752ca73a85067e05992
 - name: github.com/pelletier/go-toml
-  version: 23f644976aa7c724adf4aec911dadf4af17840ab
+  version: 685a1f1cb7a66b9cadbe8f1ac49d9f8f567d6a9d
 - name: github.com/PuerkitoBio/purell
   version: b938d81255b5473c57635324295cb0fe398c7a58
 - name: github.com/PuerkitoBio/urlesc
@@ -99,9 +103,9 @@ imports:
 - name: github.com/spf13/cast
   version: acbeb36b902d72a7a4c18e8f3241075e7ab763e4
 - name: github.com/spf13/cobra
-  version: d236d298109208d194bf9c305dda03acbd1cc8d2
+  version: 90687e7bfc7e1e5cd88eb1f513f32f01dc03dd7c
 - name: github.com/spf13/jwalterweatherman
-  version: fa7ca7e836cf3a8bb4ebf799f472c12d7e903d66
+  version: 8f07c835e5cc1450c082fe3a439cf87b0cbb2d99
 - name: github.com/spf13/pflag
   version: e57e3eeb33f795204c1ca35f56c44f83227c6e66
 - name: github.com/spf13/viper
@@ -109,7 +113,7 @@ imports:
 - name: github.com/tylerb/graceful
   version: 4654dfbb6ad53cb5e27f37d99b02e16c1872fbbb
 - name: golang.org/x/net
-  version: feeb485667d1fdabe727840fe00adc22431bc86e
+  version: c9b681d35165f1995d6f3034e61f8761d4b90c99
   subpackages:
   - context
   - context/ctxhttp
@@ -120,7 +124,7 @@ imports:
   subpackages:
   - unix
 - name: golang.org/x/text
-  version: 470f45bf29f4147d6fbd7dfd0a02a848e49f5bf4
+  version: 19e51611da83d6be54ddafce4a4af510cb3e9ea4
   subpackages:
   - secure/bidirule
   - transform
