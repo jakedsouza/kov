@@ -180,22 +180,6 @@ definitions:
       cause:
         $ref: '#/definitions/error'
 
-  credentials:
-    type: object
-    required:
-    - username
-    - password
-    properties:
-      username:
-        type: string
-        minLength: 1
-        x-nullable: false
-      password:
-        type: string
-        format: password
-        minLength: 6
-        x-nullable: false
-  
   diskFormat:
     type: string
     enum:
@@ -203,7 +187,7 @@ definitions:
     - zeroedthink
     - eagerzeroedthick
     default: thin
-  
+
   storageClass:
     type: object
     required:
@@ -245,11 +229,10 @@ definitions:
         type: integer
         format: int64
         description: Object space reservation
- 
+
   instanceSize:
     description: |
       The sizes for an instance:
-      
       * small: 1 cpu, 1Gb
       * medium: 2 cpu, 2Gb
       * large: 4 cpu, 8Gb
@@ -262,7 +245,7 @@ definitions:
     - large
     - huge
     - ginormous
-  
+
   cluster:
     type: object
     required:
@@ -273,7 +256,7 @@ definitions:
         $ref: '#/definitions/clusterConfig'
       status:
         $ref: '#/definitions/clusterStatus'
-  
+
   clusterStatus:
     type: string
     description: the status of the cluster
@@ -297,11 +280,6 @@ definitions:
         description: the cluster name, should be valid for use in dns names
         minLength: 3
         maxLength: 63
-      thumbprint:
-        description: the thumbprint of the vCenter server certificate
-        type: string
-        minLength: 57
-        pattern: '[a-fA-F0-9:]+'
       minNodes:
         type: integer
         format: int32
@@ -322,12 +300,10 @@ definitions:
           - $ref: "#/definitions/instanceSize"
           - default: small
           - description: the size of the master nodes
-      nodeSize:     
+      nodeSize:
         allOf:
           - $ref: "#/definitions/instanceSize"
           - description: the size of the worker nodes, when not   specified defaults to master size
-      credentials:
-        $ref: "#/definitions/credentials"
       storageClasses:
         type: array
         items:
@@ -350,7 +326,7 @@ definitions:
       publicNetwork:
         description: the public network to expose ports on, defaults to management network
         type: string
-        
+
   clusterUpdateConfig:
     type: object
     required:
@@ -363,13 +339,6 @@ definitions:
         description: the cluster name, should be valid for use in dns names
         readOnly: true
         pattern: '^[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?(\.[a-zA-Z](([-0-9a-zA-Z]+)?[0-9a-zA-Z])?)*$'
-      credentials:
-        $ref: "#/definitions/credentials"
-      thumbprint:
-        description: the thumbprint of the vCenter server certificate
-        type: string
-        minLength: 57
-        pattern: '[a-fA-F0-9:]+'
       minNodes:
         type: integer
         format: int32
@@ -434,7 +403,7 @@ definitions:
         type: string
 
   task:
-    description: an asynchronous tasko 
+    description: an asynchronous task
     type: object
     required:
       - id

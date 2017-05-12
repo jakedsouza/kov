@@ -21,9 +21,6 @@ import (
 // swagger:model clusterUpdateConfig
 type ClusterUpdateConfig struct {
 
-	// credentials
-	Credentials *Credentials `json:"credentials,omitempty"`
-
 	// the minimum number of nodes that can be deployed
 	MaxNodes int32 `json:"maxNodes,omitempty"`
 
@@ -48,21 +45,11 @@ type ClusterUpdateConfig struct {
 
 	// storage classes
 	StorageClasses []*StorageClass `json:"storageClasses"`
-
-	// the thumbprint of the vCenter server certificate
-	// Min Length: 57
-	// Pattern: [a-fA-F0-9:]+
-	Thumbprint string `json:"thumbprint,omitempty"`
 }
 
 // Validate validates this cluster update config
 func (m *ClusterUpdateConfig) Validate(formats strfmt.Registry) error {
 	var res []error
-
-	if err := m.validateCredentials(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
 
 	if err := m.validateMinNodes(formats); err != nil {
 		// prop
@@ -89,33 +76,9 @@ func (m *ClusterUpdateConfig) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateThumbprint(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *ClusterUpdateConfig) validateCredentials(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Credentials) { // not required
-		return nil
-	}
-
-	if m.Credentials != nil {
-
-		if err := m.Credentials.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("credentials")
-			}
-			return err
-		}
-	}
-
 	return nil
 }
 
@@ -197,23 +160,6 @@ func (m *ClusterUpdateConfig) validateStorageClasses(formats strfmt.Registry) er
 			}
 		}
 
-	}
-
-	return nil
-}
-
-func (m *ClusterUpdateConfig) validateThumbprint(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Thumbprint) { // not required
-		return nil
-	}
-
-	if err := validate.MinLength("thumbprint", "body", string(m.Thumbprint), 57); err != nil {
-		return err
-	}
-
-	if err := validate.Pattern("thumbprint", "body", string(m.Thumbprint), `[a-fA-F0-9:]+`); err != nil {
-		return err
 	}
 
 	return nil
