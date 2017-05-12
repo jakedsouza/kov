@@ -19,17 +19,11 @@ func TestReadConfigFile(t *testing.T) {
 	sampleJSON := `
 	{
 		"name":"kube",
-		"thumbprint":"29:C9:DB:2A:78:AE:FA:F5:76:7F:D9:AB:1D:9E:C8:8E:2A:94:DB:D3",
 		"minNodes":1,
 		"maxNodes":3,
 		"noOfMasters":1,
 		"masterSize":"small",
 		"nodeSize":"small",
-		"credentials":
-			{
-				"username":"testuser",
-				"password":"testpassword!23"
-			},
 		"resourcePool":"pool",
 		"nodeResourcePools":
 			[
@@ -43,15 +37,11 @@ func TestReadConfigFile(t *testing.T) {
 
 	sampleYML := `---
 name: kube
-thumbprint: 29:C9:DB:2A:78:AE:FA:F5:76:7F:D9:AB:1D:9E:C8:8E:2A:94:DB:D3
 minNodes: 1
 maxNodes: 3
 noOfMasters: 1
 masterSize: small
 nodeSize: small
-credentials:
-   username: testuser
-   password: testpassword!23
 resourcePool: pool
 nodeResourcePools:
 - pool1
@@ -119,17 +109,11 @@ func TestParseClusterCreateConfig(t *testing.T) {
 	sampleJSON := `
 	{
 		"name":"kube",
-		"thumbprint":"29:C9:DB:2A:78:AE:FA:F5:76:7F:D9:AB:1D:9E:C8:8E:2A:94:DB:D3",
 		"minNodes":1,
 		"maxNodes":3,
 		"noOfMasters":1,
 		"masterSize":"small",
 		"nodeSize":"small",
-		"credentials":
-			{
-				"username":"testuser",
-				"password":"testpassword!23"
-			},
 		"resourcePool":"pool",
 		"nodeResourcePools":
 			[
@@ -149,7 +133,6 @@ func TestParseClusterCreateConfig(t *testing.T) {
 		testManagementNetwork       = "testNetwork"
 
 		name              = &testName
-		thumbprint        = "29:C9:DB:2A:78:AE:FA:F5:76:7F:D9:AB:1D:9E:C8:8E:2A:94:DB:D3"
 		minNodes          = &minNodeNum
 		maxNodes          = &testMaxNodes
 		noOfMasters       = &masterNum
@@ -187,7 +170,6 @@ func TestParseClusterCreateConfig(t *testing.T) {
 		assert.NoError(t, err2)
 
 		assert.Equal(t, *clusterCreateConfig.Name, *name)
-		assert.Equal(t, clusterCreateConfig.Thumbprint, thumbprint)
 		assert.Equal(t, *clusterCreateConfig.MinNodes, *minNodes)
 		assert.Equal(t, clusterCreateConfig.MaxNodes, *maxNodes)
 		assert.Equal(t, *clusterCreateConfig.NoOfMasters, *noOfMasters)

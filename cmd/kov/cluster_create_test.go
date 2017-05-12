@@ -29,7 +29,7 @@ func TestCreateCluster(t *testing.T) {
 
 	var (
 		taskID        = `"1234-5678"`
-		configContent = `{"name":"kube","thumbprint":"29:C9:DB:2A:78:AE:FA:F5:76:7F:D9:AB:1D:9E:C8:8E:2A:94:DB:D3", "minNodes":1, "maxNodes": 3, "noOfMasters":1, "masterSize":"small","nodeSize":"small", "credentials":{"username":"testuser", "password":"testpassword!23"}, "resourcePool":"pool", "nodeResourcePools":["pool1"], "managementNetwork": "testNetwork", "nodeNetwork":"testNodeNetwork", "publicNetwork":"testPublicNetwork"}`
+		configContent = `{"name":"kube", "minNodes":1, "maxNodes": 3, "noOfMasters":1, "masterSize":"small","nodeSize":"small", "resourcePool":"pool", "nodeResourcePools":["pool1"], "managementNetwork": "testNetwork", "nodeNetwork":"testNodeNetwork", "publicNetwork":"testPublicNetwork"}`
 		clusterName   = "kube"
 		url           = "TestURL"
 	)
