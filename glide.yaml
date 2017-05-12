@@ -28,6 +28,7 @@ import:
 - package: github.com/golang/mock
   subpackages:
   - gomock
+- package: github.com/gosuri/uitable
 testImport:
 - package: github.com/stretchr/testify
   version: ^1.1.4
