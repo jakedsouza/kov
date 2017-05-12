@@ -21,9 +21,6 @@ import (
 // swagger:model clusterConfig
 type ClusterConfig struct {
 
-	// credentials
-	Credentials *Credentials `json:"credentials,omitempty"`
-
 	// the management network for the deployed nodes, will have ssh port enabled
 	// Required: true
 	ManagementNetwork *string `json:"managementNetwork"`
@@ -70,21 +67,11 @@ type ClusterConfig struct {
 
 	// storage classes
 	StorageClasses []*StorageClass `json:"storageClasses"`
-
-	// the thumbprint of the vCenter server certificate
-	// Min Length: 57
-	// Pattern: [a-fA-F0-9:]+
-	Thumbprint string `json:"thumbprint,omitempty"`
 }
 
 // Validate validates this cluster config
 func (m *ClusterConfig) Validate(formats strfmt.Registry) error {
 	var res []error
-
-	if err := m.validateCredentials(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
 
 	if err := m.validateManagementNetwork(formats); err != nil {
 		// prop
@@ -131,33 +118,9 @@ func (m *ClusterConfig) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateThumbprint(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *ClusterConfig) validateCredentials(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Credentials) { // not required
-		return nil
-	}
-
-	if m.Credentials != nil {
-
-		if err := m.Credentials.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("credentials")
-			}
-			return err
-		}
-	}
-
 	return nil
 }
 
@@ -301,23 +264,6 @@ func (m *ClusterConfig) validateStorageClasses(formats strfmt.Registry) error {
 			}
 		}
 
-	}
-
-	return nil
-}
-
-func (m *ClusterConfig) validateThumbprint(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Thumbprint) { // not required
-		return nil
-	}
-
-	if err := validate.MinLength("thumbprint", "body", string(m.Thumbprint), 57); err != nil {
-		return err
-	}
-
-	if err := validate.Pattern("thumbprint", "body", string(m.Thumbprint), `[a-fA-F0-9:]+`); err != nil {
-		return err
 	}
 
 	return nil
