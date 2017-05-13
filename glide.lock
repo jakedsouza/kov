@@ -1,5 +1,5 @@
 hash: 5fb39d3acbcf7d3997981e0df17b1abd178a7b0358d7be7810f650c91cc76495
-updated: 2017-05-12T13:25:57.108919098-07:00
+updated: 2017-05-12T18:47:07.751893312-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 27f7dc29434954cbdc252bd5324fa04810eff042
@@ -51,6 +51,9 @@ imports:
   version: ac356e6e42cd31fcef8e6aec13ae9ed6fe87713e
 - name: github.com/gosuri/uitable
   version: 36ee7e946282a3fb1cfecd476ddc9b35d8847e42
+  subpackages:
+  - util/strutil
+  - util/wordwrap
 - name: github.com/hashicorp/hcl
   version: 392dba7d905ed5d04a5794ba89f558b27e2ba1ca
   subpackages:
@@ -82,6 +85,8 @@ imports:
 - name: github.com/mattn/go-isatty
   version: 57fdcb988a5c543893cc61bce354a6e24ab70022
   repo: https://github.com/mattn/go-isatty
+- name: github.com/mattn/go-runewidth
+  version: 97311d9f7767e3d6f422ea06661bc2c7a19e8a5d
 - name: github.com/mitchellh/mapstructure
   version: cc8532a8e9a55ea36402aa21efdf403a60d34096
 - name: github.com/pborman/uuid
@@ -113,7 +118,7 @@ imports:
 - name: github.com/tylerb/graceful
   version: 4654dfbb6ad53cb5e27f37d99b02e16c1872fbbb
 - name: golang.org/x/net
-  version: c9b681d35165f1995d6f3034e61f8761d4b90c99
+  version: 84f0e6f92b10139f986b1756e149a7d9de270cdc
   subpackages:
   - context
   - context/ctxhttp
