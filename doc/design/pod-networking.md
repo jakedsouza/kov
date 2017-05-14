@@ -36,7 +36,7 @@ This document describes how we use Weave Net to provide:
 
   In their own words:
 
-  ![Weave Net using fast data path] (pics/weave-fast-datapath.png)
+  ![Weave Net using fast data path](pics/weave-fast-datapath.png)
   
   "weave" is a Linux bridge and "datapath" is an Open vSwitch datapath; they are connected via a veth pair. Packet capture and injection use the "datapath" device, via "router/fastdp.go:fastDatapathBridge"
  
