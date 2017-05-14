@@ -1,8 +1,8 @@
-hash: 5fb39d3acbcf7d3997981e0df17b1abd178a7b0358d7be7810f650c91cc76495
-updated: 2017-05-12T18:47:07.751893312-07:00
+hash: b0f58653d78d8ed1455cc187ceba6cff3bddeecb7deea8155901678ec501760a
+updated: 2017-05-14T00:22:09.529326547-07:00
 imports:
 - name: github.com/asaskevich/govalidator
-  version: 27f7dc29434954cbdc252bd5324fa04810eff042
+  version: 065ea97278837088c52c0cd0d963473f61b2d98c
 - name: github.com/casualjim/middlewares
   version: 54f7c1c2c35ff3150d1f31fcf7dd64ede0d65598
 - name: github.com/docker/go-units
@@ -51,9 +51,6 @@ imports:
   version: ac356e6e42cd31fcef8e6aec13ae9ed6fe87713e
 - name: github.com/gosuri/uitable
   version: 36ee7e946282a3fb1cfecd476ddc9b35d8847e42
-  subpackages:
-  - util/strutil
-  - util/wordwrap
 - name: github.com/hashicorp/hcl
   version: 392dba7d905ed5d04a5794ba89f558b27e2ba1ca
   subpackages:
@@ -85,8 +82,6 @@ imports:
 - name: github.com/mattn/go-isatty
   version: 57fdcb988a5c543893cc61bce354a6e24ab70022
   repo: https://github.com/mattn/go-isatty
-- name: github.com/mattn/go-runewidth
-  version: 97311d9f7767e3d6f422ea06661bc2c7a19e8a5d
 - name: github.com/mitchellh/mapstructure
   version: cc8532a8e9a55ea36402aa21efdf403a60d34096
 - name: github.com/pborman/uuid
@@ -117,6 +112,10 @@ imports:
   version: 0967fc9aceab2ce9da34061253ac10fb99bba5b2
 - name: github.com/tylerb/graceful
   version: 4654dfbb6ad53cb5e27f37d99b02e16c1872fbbb
+- name: github.com/vmware/vic.git
+  version: 83c72905679ae9c9cf9589aa7cff7c8e4c86b2c3
+  subpackages:
+  - lib/apiservers/portlayer
 - name: golang.org/x/net
   version: 84f0e6f92b10139f986b1756e149a7d9de270cdc
   subpackages:
@@ -144,15 +143,7 @@ imports:
 - name: gopkg.in/yaml.v2
   version: cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b
 testImports:
-- name: github.com/davecgh/go-spew
-  version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
-  subpackages:
-  - spew
-- name: github.com/pmezard/go-difflib
-  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
-  subpackages:
-  - difflib
 - name: github.com/stretchr/testify
-  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
+  version: ""
   subpackages:
   - assert
