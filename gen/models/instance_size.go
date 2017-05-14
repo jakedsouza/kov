@@ -17,7 +17,6 @@ import (
 )
 
 // InstanceSize The sizes for an instance:
-//
 // * small: 1 cpu, 1Gb
 // * medium: 2 cpu, 2Gb
 // * large: 4 cpu, 8Gb

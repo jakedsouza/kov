@@ -227,9 +227,6 @@ func init() {
         "managementNetwork"
       ],
       "properties": {
-        "credentials": {
-          "$ref": "#/definitions/credentials"
-        },
         "managementNetwork": {
           "description": "the management network for the deployed nodes, will have ssh port enabled",
           "type": "string"
@@ -307,12 +304,6 @@ func init() {
           "items": {
             "$ref": "#/definitions/storageClass"
           }
-        },
-        "thumbprint": {
-          "description": "the thumbprint of the vCenter server certificate",
-          "type": "string",
-          "minLength": 57,
-          "pattern": "[a-fA-F0-9:]+"
         }
       }
     },
@@ -333,9 +324,6 @@ func init() {
         "noOfMasters"
       ],
       "properties": {
-        "credentials": {
-          "$ref": "#/definitions/credentials"
-        },
         "maxNodes": {
           "description": "the minimum number of nodes that can be deployed",
           "type": "integer",
@@ -372,32 +360,6 @@ func init() {
           "items": {
             "$ref": "#/definitions/storageClass"
           }
-        },
-        "thumbprint": {
-          "description": "the thumbprint of the vCenter server certificate",
-          "type": "string",
-          "minLength": 57,
-          "pattern": "[a-fA-F0-9:]+"
-        }
-      }
-    },
-    "credentials": {
-      "type": "object",
-      "required": [
-        "username",
-        "password"
-      ],
-      "properties": {
-        "password": {
-          "type": "string",
-          "format": "password",
-          "minLength": 6,
-          "x-nullable": false
-        },
-        "username": {
-          "type": "string",
-          "minLength": 1,
-          "x-nullable": false
         }
       }
     },
@@ -438,7 +400,7 @@ func init() {
       }
     },
     "instanceSize": {
-      "description": "The sizes for an instance:\n\n* small: 1 cpu, 1Gb\n* medium: 2 cpu, 2Gb\n* large: 4 cpu, 8Gb\n* huge: 8 cpu, 32Gb\n* ginormous: 16cpu, 64Gb\n",
+      "description": "The sizes for an instance:\n* small: 1 cpu, 1Gb\n* medium: 2 cpu, 2Gb\n* large: 4 cpu, 8Gb\n* huge: 8 cpu, 32Gb\n* ginormous: 16cpu, 64Gb\n",
       "type": "string",
       "enum": [
         "small",
@@ -507,7 +469,7 @@ func init() {
       }
     },
     "task": {
-      "description": "an asynchronous tasko",
+      "description": "an asynchronous task",
       "type": "object",
       "required": [
         "id",
