@@ -18,7 +18,7 @@ EXCLUDE_CONTENT="^//.*NO TEST"
 ERR=false
 FAIL=false
 
-# Try and grep directorys containing go file (packages)
+# Try and grep directories containing go file (packages)
 for pkg in $(git ls-files | egrep "\.go$" | egrep -v "${EXCLUDE_FILE}" | xargs -I {} dirname {} | sort | uniq); do
   echo "Checking package: $pkg"
   testFiles=$(find $pkg -name '*test.go')
